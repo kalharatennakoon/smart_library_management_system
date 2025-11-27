@@ -27,7 +27,7 @@ A comprehensive library management system built with Java, implementing various 
 ### 3. **Builder Pattern**
 - Location: `src/model/book/`
 - Provides a flexible way to construct Book objects
-- Class: `BookBuilder`
+- Class: `BookBuilder` (as a static inner class inside `Book.java`)
 
 ### 4. **Decorator Pattern**
 - Location: `src/model/book/decorator/`
@@ -65,7 +65,6 @@ src/
 │   ├── book/
 │   │   ├── Book.java
 │   │   ├── BasicBook.java
-│   │   ├── BookBuilder.java
 │   │   ├── decorator/
 │   │   └── state/
 │   ├── borrow/
@@ -97,12 +96,12 @@ src/
 
 2. Compile the project:
    ```bash
-   javac -d bin src/**/*.java
+   javac Main.java
    ```
 
 3. Run the application:
    ```bash
-   java -cp bin Main
+   java Main
    ```
 
 ## User Types and Fine Strategies
