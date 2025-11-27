@@ -1,6 +1,7 @@
 package model.report;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -68,18 +69,14 @@ public class Report {
      * Displays the report content in a formatted manner.
      */
     public void display() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        
-        System.out.println("\n----------------------------------------------------------------------");
-        System.out.println("LIBRARY MANAGEMENT SYSTEM - REPORT");
-        System.out.println("----------------------------------------------------------------------");
-        System.out.println("Report ID: " + reportId);
-        System.out.println("Report Type: " + reportType);
-        System.out.println("Generated Date: " + generatedDate.format(formatter));
-        System.out.println("----------------------------------------------------------------------");
-        System.out.println("\nREPORT CONTENT:");
-        System.out.println(content);
-        System.out.println("\n----------------------------------------------------------------------");
+        // Use LocalDateTime to include both date and time
+        LocalDateTime now = LocalDateTime.now();
+
+        // Define a formatter for both date and time
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        // Format and display the date and time
+        System.out.println("Report generated on: " + now.format(formatter));
     }
 
     /**

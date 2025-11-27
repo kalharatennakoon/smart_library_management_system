@@ -3,6 +3,7 @@ package model.reservation;
 import model.book.Book;
 import model.user.User;
 import java.time.LocalDate;
+import java.util.Random;
 
 /**
  * Reservation class represents a book reservation made by a user.
@@ -28,6 +29,10 @@ public class Reservation {
         this.user = user;
         this.reservationDate = reservationDate;
         this.isNotified = false;
+    }
+
+    private String generateReservationId() {
+        return "R" + String.format("%04d", new Random().nextInt(10000));
     }
 
     // Getters

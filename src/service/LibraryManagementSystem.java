@@ -37,7 +37,7 @@ public class LibraryManagementSystem {
         this.reports = new ArrayList<>();
     }
 
-    // ==================== Book Management ====================
+    // ----- Book Management -----
 
     /**
      * Adds a new book to the library system.
@@ -46,7 +46,7 @@ public class LibraryManagementSystem {
     public void addBook(Book book) {
         if (findBookById(book.getBookId()) != null) {
             System.out.println("Error: Book with ID " + book.getBookId() + " already exists.");
-            return;
+            return; // Keep the flow consistent
         }
         books.add(book);
         System.out.println("Book '" + book.getTitle() + "' added successfully.");
@@ -92,7 +92,7 @@ public class LibraryManagementSystem {
         System.out.println("Book '" + book.getTitle() + "' updated successfully.");
     }
 
-    // ==================== User Management ====================
+    // ----- User Management -----
 
     /**
      * Registers a new user in the library system.
@@ -130,7 +130,7 @@ public class LibraryManagementSystem {
         System.out.println("User '" + user.getName() + "' removed successfully.");
     }
 
-    // ==================== Borrowing Operations (Using Command Pattern) ====================
+    // ----- Borrowing Operations (Using Command Pattern) -----
 
     /**
      * Borrows a book for a user using Command Pattern.
@@ -158,11 +158,15 @@ public class LibraryManagementSystem {
 
         // Track borrow record if successful
         if (book.getAvailabilityStatus().getStateName().equals("Borrowed")) {
-            List<BorrowRecord> userRecords = user.getBorrowedBooks();
-            if (!userRecords.isEmpty()) {
-                BorrowRecord latestRecord = userRecords.get(userRecords.size() - 1);
-                borrowRecords.add(latestRecord);
-            }
+            BorrowRecord record = new BorrowRecord(
+                generateId("BR"), // Auto-generate borrow record ID
+                book,
+                user,
+                LocalDate.now(),
+                LocalDate.now().plusDays(user.getBorrowLimit())
+            );
+            borrowRecords.add(record);
+            user.addBorrowRecord(record);
         }
     }
 
@@ -216,16 +220,17 @@ public class LibraryManagementSystem {
         invoker.pressButton();
 
         // Track reservation if successful
-        List<Reservation> userReservations = user.getReservations();
-        if (!userReservations.isEmpty()) {
-            Reservation latestReservation = userReservations.get(userReservations.size() - 1);
-            if (!reservations.contains(latestReservation)) {
-                reservations.add(latestReservation);
-            }
-        }
+        Reservation reservation = new Reservation(
+            generateId("RES"), // Auto-generate reservation ID
+            book,
+            user,
+            LocalDate.now()
+        );
+        reservations.add(reservation);
+        user.getReservations().add(reservation);
     }
 
-    // ==================== Report Generation ====================
+    // ----- Report Generation -----
 
     /**
      * Generates different types of reports for librarians.
@@ -345,7 +350,7 @@ public class LibraryManagementSystem {
         }
     }
 
-    // ==================== Helper Methods ====================
+    // ----- Helper Methods -----
 
     /**
      * Finds a book by its ID.
@@ -371,7 +376,16 @@ public class LibraryManagementSystem {
             .orElse(null);
     }
 
-    // ==================== Getters ====================
+    /**
+     * Generates a unique ID with the given prefix.
+     * @param prefix The prefix for the ID
+     * @return The generated ID
+     */
+    private String generateId(String prefix) {
+        return prefix + "-" + System.currentTimeMillis();
+    }
+
+    // ----- Getters -----
 
     public List<Book> getBooks() {
         return new ArrayList<>(books);
