@@ -5,6 +5,7 @@ import model.user.User;
 import model.user.fines.FineStrategy;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Random;
 
 /**
  * BorrowRecord class represents a record of a book borrowing transaction.
@@ -33,6 +34,10 @@ public class BorrowRecord {
         this.borrowDate = borrowDate;
         this.dueDate = dueDate;
         this.returnDate = null; // Not returned yet
+    }
+
+    private String generateBorrowRecordId() {
+        return "BR" + String.format("%04d", new Random().nextInt(10000));
     }
 
     // Getters

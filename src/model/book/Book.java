@@ -6,6 +6,7 @@ import model.borrow.BorrowRecord;
 import model.user.User;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Abstract Book class representing a book in the library system.
@@ -128,6 +129,8 @@ public abstract class Book {
         private String category;
         private String isbn;
         private List<String> metadata;
+        private int year;
+        private String genre;
 
         /**
          * Constructor for BookBuilder with required parameters.
@@ -151,6 +154,18 @@ public abstract class Book {
             return this;
         }
 
+        // Setter for year
+        public BookBuilder setYear(int year) {
+            this.year = year;
+            return this;
+        }
+
+        // Setter for genre
+        public BookBuilder setGenre(String genre) {
+            this.genre = genre;
+            return this;
+        }
+
         /**
          * Builds and returns a BasicBook instance.
          * @return A new BasicBook object with the configured properties
@@ -168,5 +183,9 @@ public abstract class Book {
     // Setter for Metadata (optional, if needed)
     public void setMetadata(List<String> metadata) {
         this.metadata = metadata;
+    }
+
+    private String generateBookId() {
+        return "B" + String.format("%04d", new Random().nextInt(10000));
     }
 }
