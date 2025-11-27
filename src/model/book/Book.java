@@ -73,12 +73,24 @@ public abstract class Book {
         return isbn;
     }
 
+    public String getIsbn() {
+        return isbn;
+    }
+
     public BookState getAvailabilityStatus() {
         return availabilityStatus;
     }
 
     public List<BorrowRecord> getBorrowHistory() {
         return new ArrayList<>(borrowHistory);
+    }
+
+    /**
+     * Gets the metadata of the book.
+     * @return the metadata list
+     */
+    public List<String> getMetadata() {
+        return metadata;
     }
 
     /**
@@ -146,5 +158,15 @@ public abstract class Book {
         public BasicBook build() {
             return new BasicBook(bookId, title, author, category, isbn, metadata);
         }
+    }
+
+    // Setter for ISBN (optional, if needed)
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    // Setter for Metadata (optional, if needed)
+    public void setMetadata(List<String> metadata) {
+        this.metadata = metadata;
     }
 }

@@ -273,9 +273,9 @@ public class LibraryManagementSystem {
             .collect(Collectors.toList());
 
         report.addLine("MOST BORROWED BOOKS REPORT");
-        report.addLine("=".repeat(60));
+        report.addLine("----------------------------------------------------------------------");
         report.addLine(String.format("%-10s %-30s %-15s", "Book ID", "Title", "Borrow Count"));
-        report.addLine("-".repeat(60));
+        report.addLine("----------------------------------------------------------------------");
 
         for (Map.Entry<String, Integer> entry : sortedBooks) {
             Book book = findBookById(entry.getKey());
@@ -295,10 +295,10 @@ public class LibraryManagementSystem {
      */
     private void generateActiveBorrowersReport(Report report) {
         report.addLine("ACTIVE BORROWERS REPORT");
-        report.addLine("=".repeat(60));
+        report.addLine("----------------------------------------------------------------------");
         report.addLine(String.format("%-10s %-20s %-15s %-15s", 
             "User ID", "Name", "User Type", "Active Borrows"));
-        report.addLine("-".repeat(60));
+        report.addLine("----------------------------------------------------------------------");
 
         for (User user : users) {
             int activeBorrows = user.getActiveBorrowCount();
@@ -321,10 +321,10 @@ public class LibraryManagementSystem {
         LocalDate today = LocalDate.now();
         
         report.addLine("OVERDUE BOOKS REPORT");
-        report.addLine("=".repeat(80));
+        report.addLine("----------------------------------------------------------------------");
         report.addLine(String.format("%-10s %-25s %-20s %-12s %-10s", 
             "Book ID", "Title", "Borrower", "Due Date", "Fine (LKR)"));
-        report.addLine("-".repeat(80));
+        report.addLine("----------------------------------------------------------------------");
 
         boolean hasOverdue = false;
         for (BorrowRecord record : borrowRecords) {

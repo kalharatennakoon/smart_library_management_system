@@ -70,16 +70,16 @@ public class Report {
     public void display() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         
-        System.out.println("\n" + "=".repeat(80));
+        System.out.println("\n----------------------------------------------------------------------");
         System.out.println("LIBRARY MANAGEMENT SYSTEM - REPORT");
-        System.out.println("=".repeat(80));
+        System.out.println("----------------------------------------------------------------------");
         System.out.println("Report ID: " + reportId);
         System.out.println("Report Type: " + reportType);
         System.out.println("Generated Date: " + generatedDate.format(formatter));
-        System.out.println("-".repeat(80));
+        System.out.println("----------------------------------------------------------------------");
         System.out.println("\nREPORT CONTENT:");
         System.out.println(content);
-        System.out.println("\n" + "=".repeat(80));
+        System.out.println("\n----------------------------------------------------------------------");
     }
 
     /**

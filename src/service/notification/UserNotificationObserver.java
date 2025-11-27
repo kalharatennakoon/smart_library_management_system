@@ -63,19 +63,19 @@ public class UserNotificationObserver implements Observer {
      * @param message The notification message
      */
     private void displayNotification(Book book, String message) {
-        System.out.println("┌" + "─".repeat(78) + "┐");
-        System.out.println("│ NOTIFICATION TO: " + String.format("%-60s", user.getName()) + "│");
-        System.out.println("│ Email: " + String.format("%-69s", user.getEmail()) + "│");
-        System.out.println("├" + "─".repeat(78) + "┤");
+        System.out.println("----------------------------------------------------------------------");
+        System.out.println("NOTIFICATION TO: " + user.getName());
+        System.out.println("Email: " + user.getEmail());
+        System.out.println("----------------------------------------------------------------------");
         
         if (book != null) {
-            System.out.println("│ Book: " + String.format("%-70s", book.getTitle()) + "│");
-            System.out.println("│ Status: " + String.format("%-68s", book.getAvailabilityStatus().getStateName()) + "│");
-            System.out.println("├" + "─".repeat(78) + "┤");
+            System.out.println("Book: " + book.getTitle());
+            System.out.println("Status: " + book.getAvailabilityStatus().getStateName());
+            System.out.println("----------------------------------------------------------------------");
         }
         
-        System.out.println("│ Message: " + String.format("%-67s", message) + "│");
-        System.out.println("└" + "─".repeat(78) + "┘");
+        System.out.println("Message: " + message);
+        System.out.println("----------------------------------------------------------------------");
         System.out.println();
     }
 

@@ -21,10 +21,9 @@ import command.*;
  */
 public class Main {
     public static void main(String[] args) {
-        System.out.println("╔" + "═".repeat(78) + "╗");
-        System.out.println("║" + centerText("SMART LIBRARY MANAGEMENT SYSTEM", 78) + "║");
-        System.out.println("║" + centerText("Demonstrating Design Patterns & OOP Principles", 78) + "║");
-        System.out.println("╚" + "═".repeat(78) + "╝");
+        System.out.println("----------------------------------------------------------------------");
+        System.out.println("SMART LIBRARY MANAGEMENT SYSTEM");
+        System.out.println("----------------------------------------------------------------------");
         System.out.println();
 
         // Initialize the system
@@ -46,9 +45,9 @@ public class Main {
         demonstrateStrategyPattern(library, student, faculty, guest);
         demonstrateReportGeneration(library);
 
-        System.out.println("\n╔" + "═".repeat(78) + "╗");
-        System.out.println("║" + centerText("SYSTEM DEMONSTRATION COMPLETED", 78) + "║");
-        System.out.println("╚" + "═".repeat(78) + "╝");
+        System.out.println("\n----------------------------------------------------------------------");
+        System.out.println("SYSTEM DEMONSTRATION COMPLETED");
+        System.out.println("----------------------------------------------------------------------");
     }
 
     /**
@@ -79,11 +78,10 @@ public class Main {
         library.addBook(book2);
         library.addBook(book3);
 
-        System.out.println("✓ Books created successfully with metadata using Builder Pattern\n");
-        System.out.println("Book 1: " + book1.getDescription());
-        System.out.println("Book 2: " + book2.getDescription());
-        System.out.println("Book 3: " + book3.getDescription());
-        System.out.println();
+        System.out.println("Books created successfully with metadata using Builder Pattern\n");
+        printBookDetails("Book 1", book1);
+        printBookDetails("Book 2", book2);
+        printBookDetails("Book 3", book3);
     }
 
     /**
@@ -109,7 +107,7 @@ public class Main {
         System.out.println("Multiple Decorators (Recommended + Special Edition): " + multiDecorated.getDescription());
         System.out.println();
 
-        System.out.println("✓ Decorator Pattern allows dynamic feature addition without modifying base class\n");
+        System.out.println("Decorator Pattern allows dynamic feature addition without modifying base class\n");
     }
 
     /**
@@ -118,7 +116,7 @@ public class Main {
     private static User demonstrateUserManagement(LibraryManagementSystem library) {
         printSectionHeader("USER MANAGEMENT - STUDENT");
 
-        User student = new Student("U001", "Alice Johnson", "alice@university.edu", "077-1234567");
+        User student = new Student("U001", "Nimali Perera", "nimali.perera@university.lk", "077-1234567");
         library.registerUser(student);
 
         System.out.println("Student Details:");
@@ -137,7 +135,7 @@ public class Main {
     private static User demonstrateFacultyManagement(LibraryManagementSystem library) {
         printSectionHeader("USER MANAGEMENT - FACULTY");
 
-        User faculty = new Faculty("U002", "Dr. Bob Smith", "bob.smith@university.edu", "077-2345678");
+        User faculty = new Faculty("U002", "Dr. Kamal Fernando", "kamal.fernando@university.lk", "077-2345678");
         library.registerUser(faculty);
 
         System.out.println("Faculty Details:");
@@ -156,7 +154,7 @@ public class Main {
     private static User demonstrateGuestManagement(LibraryManagementSystem library) {
         printSectionHeader("USER MANAGEMENT - GUEST");
 
-        User guest = new Guest("U003", "Charlie Brown", "charlie@email.com", "077-3456789");
+        User guest = new Guest("U003", "Sanduni Silva", "sanduni@email.lk", "077-3456789");
         library.registerUser(guest);
 
         System.out.println("Guest Details:");
@@ -184,8 +182,8 @@ public class Main {
         notificationService.registerObserver(observer1);
         notificationService.registerObserver(observer2);
 
-        System.out.println("✓ Observers registered successfully");
-        System.out.println("✓ Users will be notified about relevant book events\n");
+        System.out.println("Observers registered successfully");
+        System.out.println("Users will be notified about relevant book events\n");
     }
 
     /**
@@ -219,7 +217,7 @@ public class Main {
         System.out.println("New State: " + book.getAvailabilityStatus().getStateName());
         System.out.println();
 
-        System.out.println("✓ State Pattern manages book availability transitions\n");
+        System.out.println("State Pattern manages book availability transitions\n");
     }
 
     /**
@@ -249,7 +247,7 @@ public class Main {
         invoker.pressButton();
         System.out.println();
 
-        System.out.println("✓ Command Pattern encapsulates actions as objects\n");
+        System.out.println("Command Pattern encapsulates actions as objects\n");
     }
 
     /**
@@ -278,7 +276,7 @@ public class Main {
         System.out.println("  Guest (5 days overdue):   5 × LKR 100 = LKR 500");
         System.out.println();
 
-        System.out.println("✓ Strategy Pattern allows different fine calculations per user type\n");
+        System.out.println("Strategy Pattern allows different fine calculations per user type\n");
     }
 
     /**
@@ -310,16 +308,25 @@ public class Main {
      * Helper method to print section headers.
      */
     private static void printSectionHeader(String title) {
-        System.out.println("\n" + "=".repeat(80));
-        System.out.println(centerText(title, 80));
-        System.out.println("=".repeat(80) + "\n");
+        System.out.println("\n----------------------------------------------------------------------");
+        System.out.println(title);
+        System.out.println("----------------------------------------------------------------------\n");
     }
 
     /**
-     * Helper method to center text.
+     * Helper method to print book details in a formatted way.
      */
-    private static String centerText(String text, int width) {
-        int padding = (width - text.length()) / 2;
-        return " ".repeat(Math.max(0, padding)) + text + " ".repeat(Math.max(0, padding));
+    private static void printBookDetails(String label, Book book) {
+        System.out.println(label + ":");
+        System.out.println("  Book ID    : " + book.getBookId());
+        System.out.println("  Title      : " + book.getTitle());
+        System.out.println("  Author     : " + book.getAuthor());
+        System.out.println("  Category   : " + book.getCategory());
+        System.out.println("  ISBN       : " + book.getIsbn());
+        System.out.println("  Status     : " + book.getAvailabilityStatus().getStateName());
+        if (!book.getMetadata().isEmpty()) {
+            System.out.println("  Metadata   : " + String.join(", ", book.getMetadata()));
+        }
+        System.out.println();
     }
 }
