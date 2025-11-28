@@ -6,6 +6,7 @@ import model.borrow.BorrowRecord;
 import model.reservation.Reservation;
 import model.report.Report;
 import command.*;
+import exception.LibraryException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,18 +24,23 @@ public class LibraryManagementSystem {
     private List<User> users;
     private List<BorrowRecord> borrowRecords;
     private List<Reservation> reservations;
+    private CommandInvoker commandInvoker;
     private List<Report> reports;
+
+    private static LibraryManagementSystem instance;
 
     /**
      * Constructor for LibraryManagementSystem.
      * Initializes all data structures.
      */
     public LibraryManagementSystem() {
+        instance = this;
         this.books = new ArrayList<>();
         this.users = new ArrayList<>();
         this.borrowRecords = new ArrayList<>();
         this.reservations = new ArrayList<>();
         this.reports = new ArrayList<>();
+        this.commandInvoker = new CommandInvoker();
     }
 
     // ----- Book Management -----
@@ -138,35 +144,17 @@ public class LibraryManagementSystem {
      * @param userId The ID of the user borrowing the book
      */
     public void borrowBook(String bookId, String userId) {
-        Book book = findBookById(bookId);
-        User user = findUserById(userId);
+        try {
+            Book book = findBookById(bookId);
+            User user = findUserById(userId);
+            if (book == null) throw new LibraryException("Book with ID " + bookId + " not found.");
+            if (user == null) throw new LibraryException("User with ID " + userId + " not found.");
 
-        if (book == null) {
-            System.out.println("Error: Book with ID " + bookId + " not found.");
-            return;
-        }
-        if (user == null) {
-            System.out.println("Error: User with ID " + userId + " not found.");
-            return;
-        }
-
-        // Use Command Pattern
-        Command borrowCommand = new BorrowCommand(book, user);
-        CommandInvoker invoker = new CommandInvoker();
-        invoker.setCommand(borrowCommand);
-        invoker.pressButton();
-
-        // Track borrow record if successful
-        if (book.getAvailabilityStatus().getStateName().equals("Borrowed")) {
-            BorrowRecord record = new BorrowRecord(
-                generateId("BR"), // Auto-generate borrow record ID
-                book,
-                user,
-                LocalDate.now(),
-                LocalDate.now().plusDays(user.getBorrowLimit())
-            );
-            borrowRecords.add(record);
-            user.addBorrowRecord(record);
+            Command borrowCommand = new BorrowCommand(book, user);
+            commandInvoker.setCommand(borrowCommand);
+            commandInvoker.pressButton();
+        } catch (LibraryException e) {
+            System.out.println("\nError: " + e.getMessage());
         }
     }
 
@@ -176,23 +164,18 @@ public class LibraryManagementSystem {
      * @param userId The ID of the user returning the book
      */
     public void returnBook(String bookId, String userId) {
-        Book book = findBookById(bookId);
-        User user = findUserById(userId);
+        try {
+            Book book = findBookById(bookId);
+            User user = findUserById(userId);
+            if (book == null) throw new LibraryException("Book with ID " + bookId + " not found.");
+            if (user == null) throw new LibraryException("User with ID " + userId + " not found.");
 
-        if (book == null) {
-            System.out.println("Error: Book with ID " + bookId + " not found.");
-            return;
+            Command returnCommand = new ReturnCommand(book, user);
+            commandInvoker.setCommand(returnCommand);
+            commandInvoker.pressButton();
+        } catch (LibraryException e) {
+            System.out.println("\nError: " + e.getMessage());
         }
-        if (user == null) {
-            System.out.println("Error: User with ID " + userId + " not found.");
-            return;
-        }
-
-        // Use Command Pattern
-        Command returnCommand = new ReturnCommand(book, user);
-        CommandInvoker invoker = new CommandInvoker();
-        invoker.setCommand(returnCommand);
-        invoker.pressButton();
     }
 
     /**
@@ -201,33 +184,18 @@ public class LibraryManagementSystem {
      * @param userId The ID of the user reserving the book
      */
     public void reserveBook(String bookId, String userId) {
-        Book book = findBookById(bookId);
-        User user = findUserById(userId);
+        try {
+            Book book = findBookById(bookId);
+            User user = findUserById(userId);
+            if (book == null) throw new LibraryException("Book with ID " + bookId + " not found.");
+            if (user == null) throw new LibraryException("User with ID " + userId + " not found.");
 
-        if (book == null) {
-            System.out.println("Error: Book with ID " + bookId + " not found.");
-            return;
+            Command reserveCommand = new ReserveCommand(book, user);
+            commandInvoker.setCommand(reserveCommand);
+            commandInvoker.pressButton();
+        } catch (LibraryException e) {
+            System.out.println("\nError: " + e.getMessage());
         }
-        if (user == null) {
-            System.out.println("Error: User with ID " + userId + " not found.");
-            return;
-        }
-
-        // Use Command Pattern
-        Command reserveCommand = new ReserveCommand(book, user);
-        CommandInvoker invoker = new CommandInvoker();
-        invoker.setCommand(reserveCommand);
-        invoker.pressButton();
-
-        // Track reservation if successful
-        Reservation reservation = new Reservation(
-            generateId("RES"), // Auto-generate reservation ID
-            book,
-            user,
-            LocalDate.now()
-        );
-        reservations.add(reservation);
-        user.getReservations().add(reservation);
     }
 
     // ----- Report Generation -----
@@ -359,7 +327,7 @@ public class LibraryManagementSystem {
      */
     private Book findBookById(String bookId) {
         return books.stream()
-            .filter(book -> book.getBookId().equals(bookId))
+            .filter(book -> book.getBookId().equalsIgnoreCase(bookId))
             .findFirst()
             .orElse(null);
     }
@@ -371,7 +339,7 @@ public class LibraryManagementSystem {
      */
     private User findUserById(String userId) {
         return users.stream()
-            .filter(user -> user.getUserId().equals(userId))
+            .filter(user -> user.getUserId().equalsIgnoreCase(userId))
             .findFirst()
             .orElse(null);
     }
@@ -405,5 +373,15 @@ public class LibraryManagementSystem {
 
     public List<Report> getReports() {
         return new ArrayList<>(reports);
+    }
+
+    public static LibraryManagementSystem getInstance() {
+        return instance;
+    }
+
+    public void addBorrowRecord(BorrowRecord record) {
+        if (record != null) {
+            borrowRecords.add(record);
+        }
     }
 }

@@ -16,11 +16,15 @@ public class Main {
     private LibraryManagementSystem library;
     private NotificationService notificationService;
     private Scanner scanner;
+    private int nextBookId = 1;
+    private int nextUserId = 1;
 
     public Main() {
         this.library = new LibraryManagementSystem();
         this.notificationService = new NotificationService();
         this.scanner = new Scanner(System.in);
+        this.nextBookId = 1;
+        this.nextUserId = 1;
     }
 
     public static void main(String[] args) {
@@ -150,7 +154,6 @@ public class Main {
     private void decorateBook() {
         if (library.getBooks().isEmpty()) {
             System.out.println("\nNo books available. Add a book first.");
-            bookManagementMenu(); // Stay in book management menu
             return;
         }
         
@@ -207,8 +210,26 @@ public class Main {
         }
         
         viewAllBooks();
-        String bookId = getStringInput("\nEnter Book ID to remove: ");
-        library.removeBook(bookId);
+        String bookId = getStringInput("\nEnter Book ID to remove: ").trim();
+        
+        // Find the book first to confirm its existence and details
+        Book bookToRemove = findBookById(bookId);
+
+        if (bookToRemove == null) {
+            System.out.println("\nError: Book with ID " + bookId + " not found.");
+            return;
+        }
+
+        // Get confirmation before deleting
+        System.out.printf("\nAre you sure you want to delete the book '%s' (ID: %s)? (yes/no): ",
+                bookToRemove.getTitle(), bookToRemove.getBookId());
+        String confirmation = scanner.nextLine().trim();
+
+        if (confirmation.equalsIgnoreCase("yes")) {
+            library.removeBook(bookToRemove.getBookId()); // Use the correct-cased ID
+        } else {
+            System.out.println("\nDeletion cancelled.");
+        }
     }
 
     private void viewAllBooks() {
@@ -216,7 +237,6 @@ public class Main {
         
         if (library.getBooks().isEmpty()) {
             System.out.println("No books in the system.");
-            bookManagementMenu(); // Show book management menu again
             return;
         }
         
@@ -335,13 +355,30 @@ public class Main {
         
         if (library.getUsers().isEmpty()) {
             System.out.println("\nNo users available in the system to remove.");
-            userManagementMenu(); // Show user management menu again
             return;
         }
         
         viewAllUsers();
-        String userId = getStringInput("\nEnter User ID to remove: ");
-        library.removeUser(userId);
+        String userId = getStringInput("\nEnter User ID to remove: ").trim();
+
+        // Find the user first to confirm existence and details
+        User userToRemove = findUserById(userId);
+
+        if (userToRemove == null) {
+            System.out.println("\nError: User with ID " + userId + " not found.");
+            return;
+        }
+
+        // Get confirmation before deleting
+        System.out.printf("\nAre you sure you want to delete the user '%s' (ID: %s)? (yes/no): ",
+                userToRemove.getName(), userToRemove.getUserId());
+        String confirmation = scanner.nextLine().trim();
+
+        if (confirmation.equalsIgnoreCase("yes")) {
+            library.removeUser(userToRemove.getUserId()); // Use the correct-cased ID
+        } else {
+            System.out.println("\nDeletion cancelled.");
+        }
     }
 
     private void viewAllUsers() {
@@ -349,7 +386,6 @@ public class Main {
         
         if (library.getUsers().isEmpty()) {
             System.out.println("No users in the system.");
-            userManagementMenu(); // Show user management menu again
             return;
         }
         
@@ -368,15 +404,16 @@ public class Main {
     // ------ BORROWING OPERATIONS --------
 
     private void borrowingOperationsMenu() {
-        printSectionHeader("BORROWING OPERATIONS"); // Command Pattern
-        System.out.println("1. Borrow Book");
-        System.out.println("2. Return Book");
-        System.out.println("3. View Borrow Records");
-        System.out.println("0. Back to Main Menu");
-        
-        int choice = getIntInput("\nEnter your choice: ");
-        
-        switch (choice) {
+        while (true) {
+            printSectionHeader("BORROWING OPERATIONS"); // Command Pattern
+            System.out.println("1. Borrow Book");
+            System.out.println("2. Return Book");
+            System.out.println("3. View Borrow Records");
+            System.out.println("0. Back to Main Menu");
+
+            int choice = getIntInput("\nEnter your choice: ");
+
+            switch (choice) {
             case 1:
                 borrowBook();
                 break;
@@ -386,6 +423,11 @@ public class Main {
             case 3:
                 viewBorrowRecords();
                 break;
+                case 0:
+                    return; // Exit to Main Menu
+                default:
+                    System.out.println("\nInvalid choice. Please enter a number between 0 and 3.");
+            }
         }
     }
 
@@ -394,7 +436,6 @@ public class Main {
         
         if (library.getBooks().isEmpty()) {
             System.out.println("\nNo books available in the system to borrow.");
-            borrowingOperationsMenu(); // Stay in borrowing operations menu
             return;
         }
         
@@ -403,18 +444,31 @@ public class Main {
         
         if (library.getUsers().isEmpty()) {
             System.out.println("\nNo registered users available to borrow books.");
-            borrowingOperationsMenu(); // Stay in borrowing operations menu
             return;
         }
         
         System.out.println("\nRegistered Users:");
         viewAllUsers();
         
-        String bookId = getStringInput("\nEnter Book ID: ");
-        String userId = getStringInput("Enter User ID: ");
+        String bookId = getStringInput("\nEnter Book ID: ").trim();
+        String userId = getStringInput("Enter User ID: ").trim();
         
         System.out.println("\nExecuting BorrowCommand (Command Pattern)...");
-        library.borrowBook(bookId, userId);
+
+        // Find the actual book and user to get correctly-cased IDs
+        Book bookToBorrow = findBookById(bookId);
+        User userToBorrow = findUserById(userId);
+
+        if (bookToBorrow == null) {
+            System.out.println("\nError: Book with ID " + bookId + " not found.");
+            return;
+        }
+        if (userToBorrow == null) {
+            System.out.println("\nError: User with ID " + userId + " not found.");
+            return;
+        }
+
+        library.borrowBook(bookToBorrow.getBookId(), userToBorrow.getUserId());
     }
 
     private void returnBook() {
@@ -422,17 +476,30 @@ public class Main {
         
         if (library.getBorrowRecords().isEmpty()) {
             System.out.println("\nNo borrow records found.");
-            borrowingOperationsMenu(); // Show borrowing operations menu again
             return;
         }
         
         viewBorrowRecords();
         
-        String bookId = getStringInput("\nEnter Book ID: ");
-        String userId = getStringInput("Enter User ID: ");
+        String bookId = getStringInput("\nEnter Book ID: ").trim();
+        String userId = getStringInput("Enter User ID: ").trim();
         
         System.out.println("\nExecuting ReturnCommand (Command Pattern)...");
-        library.returnBook(bookId, userId);
+
+        // Find the actual book and user to get correctly-cased IDs
+        Book bookToReturn = findBookById(bookId);
+        User userReturning = findUserById(userId);
+
+        if (bookToReturn == null) {
+            System.out.println("\nError: Book with ID " + bookId + " not found.");
+            return;
+        }
+        if (userReturning == null) {
+            System.out.println("\nError: User with ID " + userId + " not found.");
+            return;
+        }
+
+        library.returnBook(bookToReturn.getBookId(), userReturning.getUserId());
         System.out.println("(Strategy Pattern used for fine calculation)");
     }
 
@@ -441,7 +508,6 @@ public class Main {
         
         if (library.getBorrowRecords().isEmpty()) {
             System.out.println("No borrow records found.");
-            borrowingOperationsMenu(); // Show borrowing operations menu again
             return;
         }
         
@@ -465,20 +531,26 @@ public class Main {
     // ------ RESERVATION MENU --------
 
     private void reservationMenu() {
-        printSectionHeader("RESERVATION OPERATIONS"); // State Pattern
-        System.out.println("1. Reserve Book");
-        System.out.println("2. View Reservations");
-        System.out.println("0. Back to Main Menu");
-        
-        int choice = getIntInput("\nEnter your choice: ");
-        
-        switch (choice) {
+        while (true) {
+            printSectionHeader("RESERVATION OPERATIONS"); // State Pattern
+            System.out.println("1. Reserve Book");
+            System.out.println("2. View Reservations");
+            System.out.println("0. Back to Main Menu");
+
+            int choice = getIntInput("\nEnter your choice: ");
+
+            switch (choice) {
             case 1:
                 reserveBook();
                 break;
             case 2:
                 viewReservations();
                 break;
+                case 0:
+                    return; // Exit to Main Menu
+                default:
+                    System.out.println("\nInvalid choice. Please enter a number between 0 and 2.");
+            }
         }
     }
 
@@ -487,7 +559,6 @@ public class Main {
         
         if (library.getBooks().isEmpty()) {
             System.out.println("\nNo books available in the system to reserve.");
-            reservationMenu(); // Stay in reservation operations menu
             return;
         }
         
@@ -496,17 +567,30 @@ public class Main {
         
         if (library.getUsers().isEmpty()) {
             System.out.println("\nNo registered users available to reserve books.");
-            reservationMenu(); // Stay in reservation operations menu
             return;
         }
         
         viewAllUsers();
         
-        String bookId = getStringInput("\nEnter Book ID: ");
-        String userId = getStringInput("Enter User ID: ");
+        String bookId = getStringInput("\nEnter Book ID: ").trim();
+        String userId = getStringInput("Enter User ID: ").trim();
         
         System.out.println("\nExecuting ReserveCommand..."); // Command Pattern
-        library.reserveBook(bookId, userId);
+
+        // Find the actual book and user to get correctly-cased IDs
+        Book bookToReserve = findBookById(bookId);
+        User userReserving = findUserById(userId);
+
+        if (bookToReserve == null) {
+            System.out.println("\nError: Book with ID " + bookId + " not found.");
+            return;
+        }
+        if (userReserving == null) {
+            System.out.println("\nError: User with ID " + userId + " not found.");
+            return;
+        }
+
+        library.reserveBook(bookToReserve.getBookId(), userReserving.getUserId());
         System.out.println("(State Pattern transitions book to Reserved state)");
     }
 
@@ -515,7 +599,6 @@ public class Main {
         
         if (library.getReservations().isEmpty()) {
             System.out.println("No reservations found.");
-            reservationMenu(); // Stay in reservation operations menu
             return;
         }
         
@@ -569,7 +652,7 @@ public class Main {
         }
         
         viewAllBooks();
-        String bookId = getStringInput("\nEnter Book ID: ");
+        String bookId = getStringInput("\nEnter Book ID: ").trim();
         Book book = findBookById(bookId);
         
         if (book != null) {
@@ -585,7 +668,7 @@ public class Main {
         }
         
         viewAllBooks();
-        String bookId = getStringInput("\nEnter Book ID: ");
+        String bookId = getStringInput("\nEnter Book ID: ").trim();
         Book book = findBookById(bookId);
         
         if (book != null) {
@@ -703,7 +786,14 @@ public class Main {
 
     private Book findBookById(String bookId) {
         return library.getBooks().stream()
-            .filter(book -> book.getBookId().equals(bookId))
+            .filter(book -> book.getBookId().equalsIgnoreCase(bookId))
+            .findFirst()
+            .orElse(null);
+    }
+    
+    private User findUserById(String userId) {
+        return library.getUsers().stream()
+            .filter(user -> user.getUserId().equalsIgnoreCase(userId))
             .findFirst()
             .orElse(null);
     }
@@ -720,6 +810,12 @@ public class Main {
     }
 
     private String generateId(String prefix) {
+        if ("B".equals(prefix)) {
+            return prefix + String.format("%04d", nextBookId++);
+        } else if ("U".equals(prefix)) {
+            return prefix + String.format("%04d", nextUserId++);
+        }
+        // Fallback for any other prefixes, though not expected
         return prefix + String.format("%04d", new Random().nextInt(10000));
     }
 }

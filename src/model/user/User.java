@@ -1,11 +1,13 @@
 package model.user;
 
+import exception.LibraryException;
 import model.book.Book;
 import model.borrow.BorrowRecord;
 import model.reservation.Reservation;
 import model.user.fines.FineStrategy;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -55,11 +57,11 @@ public abstract class User {
     }
 
     public List<BorrowRecord> getBorrowedBooks() {
-        return new ArrayList<>(borrowedBooks);
+        return Collections.unmodifiableList(borrowedBooks);
     }
 
     public List<Reservation> getReservations() {
-        return new ArrayList<>(reservations);
+        return Collections.unmodifiableList(reservations);
     }
 
     /**
@@ -67,15 +69,14 @@ public abstract class User {
      * Checks borrow limit before allowing the operation.
      * @param book The book to be borrowed
      */
-    public void borrowBook(Book book) {
+    public void borrowBook(Book book) throws LibraryException {
         // Check if user has reached borrow limit
         long activeBorrows = borrowedBooks.stream()
             .filter(record -> record.getReturnDate() == null)
             .count();
         
-        if (activeBorrows >= getBorrowLimit()) {
-            System.out.println("Error: " + name + " has reached the borrow limit of " + getBorrowLimit() + " books.");
-            return;
+        if (activeBorrows >= getMaxBorrowCapacity()) {
+            throw new LibraryException(name + " has reached the borrow limit of " + getMaxBorrowCapacity() + " books.");
         }
 
         // Delegate to book's state pattern
@@ -88,68 +89,56 @@ public abstract class User {
      * Returns a borrowed book.
      * @param book The book to be returned
      */
-    public void returnBook(Book book) {
-        // Check if user has actually borrowed this book and not returned it yet
-        boolean hasBorrowed = borrowedBooks.stream()
-            .anyMatch(record -> record.getBook().getBookId().equals(book.getBookId()) 
-                             && record.getReturnDate() == null);
+    public void returnBook(Book book) throws LibraryException {
+        // Find the active borrow record for this book
+        BorrowRecord recordToUpdate = borrowedBooks.stream()
+            .filter(record -> record.getBook().getBookId().equals(book.getBookId()) && record.getReturnDate() == null)
+            .findFirst()
+            .orElse(null);
         
-        if (!hasBorrowed) {
-            System.out.println("Error: " + name + " has not borrowed this book or has already returned it.");
-            return;
+        if (recordToUpdate == null) {
+            throw new LibraryException(name + " has not borrowed this book or has already returned it.");
         }
 
         // Delegate to book's state pattern
         book.returnBook();
+
+        // Mark the borrow record as returned
+        recordToUpdate.setReturnDate(LocalDate.now());
+        System.out.println("Book '" + book.getTitle() + "' returned by " + name + ".");
     }
 
     /**
      * Reserves a book for the user.
      * @param book The book to be reserved
      */
-    public void reserveBook(Book book) {
+    public void reserveBook(Book book) throws LibraryException {
         // Check if user already has a reservation for this book
         boolean alreadyReserved = reservations.stream()
             .anyMatch(reservation -> reservation.getBook().getBookId().equals(book.getBookId()));
         
         if (alreadyReserved) {
-            System.out.println("Error: " + name + " has already reserved this book.");
-            return;
+            throw new LibraryException(name + " has already reserved this book.");
         }
 
-        // Delegate to book's state pattern
+        // Delegate to book's state pattern, which returns a reservation record on success
+        // The book's state will call back to add the reservation to the user.
         book.reserve(this);
-        
-        // Create and add reservation
-        Reservation reservation = new Reservation(
-            "RES-" + System.currentTimeMillis(),
-            book,
-            this,
-            LocalDate.now()
-        );
-        reservations.add(reservation);
     }
 
     /**
      * Cancels a reservation for a book.
      * @param book The book whose reservation should be cancelled
      */
-    public void cancelReservation(Book book) {
-        Reservation toRemove = null;
-        
-        for (Reservation reservation : reservations) {
-            if (reservation.getBook().getBookId().equals(book.getBookId())) {
-                toRemove = reservation;
-                break;
-            }
-        }
-        
-        if (toRemove != null) {
-            toRemove.cancel();
-            reservations.remove(toRemove);
-        } else {
-            System.out.println("Error: No reservation found for book '" + book.getTitle() + "'.");
-        }
+    public void cancelReservation(Book book) throws LibraryException {
+        // Find the reservation using a stream for consistency
+        Reservation toRemove = reservations.stream()
+            .filter(reservation -> reservation.getBook().getBookId().equals(book.getBookId()))
+            .findFirst()
+            .orElseThrow(() -> new LibraryException("No reservation found for book '" + book.getTitle() + "'."));
+
+        toRemove.cancel();
+        reservations.remove(toRemove);
     }
 
     /**
@@ -174,10 +163,16 @@ public abstract class User {
     // Abstract methods to be implemented by subclasses (Strategy Pattern)
     
     /**
-     * Gets the borrow limit based on membership type.
-     * @return Maximum number of books that can be borrowed simultaneously
+     * Gets the borrow period in days based on membership type.
+     * @return Number of days a book can be borrowed
      */
-    public abstract int getBorrowLimit();
+    public abstract int getBorrowPeriodInDays();
+
+    /**
+     * Gets the maximum number of books that can be borrowed simultaneously.
+     * @return Maximum borrowing capacity
+     */
+    public abstract int getMaxBorrowCapacity();
 
     /**
      * Gets the fine calculation strategy based on membership type.

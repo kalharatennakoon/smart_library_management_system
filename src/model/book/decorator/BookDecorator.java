@@ -23,7 +23,8 @@ public abstract class BookDecorator extends Book {
               decoratedBook.getTitle(), 
               decoratedBook.getAuthor(), 
               decoratedBook.getCategory(), 
-              decoratedBook.getISBN());
+              decoratedBook.getISBN(),
+              decoratedBook.getMetadata());
         this.decoratedBook = decoratedBook;
     }
 
@@ -74,12 +75,17 @@ public abstract class BookDecorator extends Book {
     }
 
     @Override
-    public void setAvailabilityStatus(BookState state) {
-        decoratedBook.setAvailabilityStatus(state);
+    public void setState(BookState state) {
+        decoratedBook.setState(state);
     }
 
     @Override
     public void addBorrowRecord(BorrowRecord record) {
         decoratedBook.addBorrowRecord(record);
+    }
+
+    @Override
+    public List<BorrowRecord> getBorrowHistoryInternal() {
+        return decoratedBook.getBorrowHistoryInternal();
     }
 }

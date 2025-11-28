@@ -44,11 +44,6 @@ A comprehensive library management system built with Java, implementing various 
 - Notification system for user updates
 - Classes: `NotificationService`, `UserNotificationObserver`
 
-### 7. **Singleton Pattern**
-- Location: `src/service/`
-- Ensures single instance of LibraryManagementSystem
-- Class: `LibraryManagementSystem`
-
 ## Project Structure
 
 ```
@@ -61,6 +56,8 @@ src/
 │   ├── ReturnCommand.java
 │   ├── ReserveCommand.java
 │   └── CancelReservationCommand.java
+├── exception/
+│   └── LibraryException.java
 ├── model/
 │   ├── book/
 │   │   ├── Book.java
@@ -76,6 +73,10 @@ src/
 │       ├── Faculty.java
 │       ├── Guest.java
 │       └── fines/
+│           ├── FineStrategy.java
+│           ├── StudentFineStrategy.java
+│           └── FacultyFineStrategy.java
+│           └── GuestFineStrategy.java
 └── service/
     ├── LibraryManagementSystem.java
     └── notification/
@@ -111,6 +112,15 @@ src/
 - **Guests**: Higher fine rates with limited borrowing privileges
 
 ## Author
+
+## Assumptions Made
+
+The following rules were not explicitly defined in the case study and have been implemented based on common library policies. These are clearly marked in the source code for reference.
+
+- **Student Borrow Limit**: Assumed to be **5** books.
+- **Faculty Borrow Limit**: Assumed to be **10** books.
+- **Guest Borrow Limit**: Assumed to be **2** books.
+- **Guest Loan Period**: Assumed to be **7** days.
 
 Kalhara Tennakoon
 - GitHub: [kalharatennakoon](https://github.com/kalharatennakoon)

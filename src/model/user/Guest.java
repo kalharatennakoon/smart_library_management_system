@@ -11,7 +11,6 @@ import model.user.fines.GuestFineStrategy;
  * - Fine rate: LKR 100/day
  */
 public class Guest extends User {
-    private int borrowLimit;
 
     /**
      * Constructor for Guest.
@@ -22,16 +21,14 @@ public class Guest extends User {
      */
     public Guest(String userId, String name, String email, String contactNumber) {
         super(userId, name, email, contactNumber);
-        this.borrowLimit = 2; // Guests can borrow up to 2 books
     }
 
     /**
-     * Returns the borrow limit for guests.
-     * Also represents the loan period in days (7 days for guests).
-     * @return Maximum number of days for borrowing
+     * Returns the borrow period in days for guests.
+     * @return Loan period in days (7 days for guests)
      */
     @Override
-    public int getBorrowLimit() {
+    public int getBorrowPeriodInDays() {
         return 7; // 7 days loan period for guests
     }
 
@@ -46,9 +43,11 @@ public class Guest extends User {
 
     /**
      * Gets the maximum number of books a guest can borrow simultaneously.
-     * @return Maximum book borrowing capacity
+     * NOTE: This value (2) is an assumption.
+     * @return Maximum book borrowing capacity (2 books)
      */
+    @Override
     public int getMaxBorrowCapacity() {
-        return borrowLimit;
+        return 2; // Guests can borrow up to 2 books
     }
 }

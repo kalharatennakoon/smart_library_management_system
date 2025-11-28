@@ -77,6 +77,8 @@ public class Report {
 
         // Format and display the date and time
         System.out.println("Report generated on: " + now.format(formatter));
+        System.out.println();
+        System.out.println(getContent());
     }
 
     /**

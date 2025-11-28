@@ -2,6 +2,7 @@ package command;
 
 import model.book.Book;
 import model.user.User;
+import exception.LibraryException;
 
 /**
  * Concrete command for returning a book.
@@ -27,6 +28,10 @@ public class ReturnCommand implements Command {
      */
     @Override
     public void execute() {
-        user.returnBook(book);
+        try {
+            user.returnBook(book);
+        } catch (LibraryException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 }

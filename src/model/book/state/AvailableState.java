@@ -4,6 +4,7 @@ import model.book.Book;
 import model.user.User;
 import model.borrow.BorrowRecord;
 import java.time.LocalDate;
+import java.util.UUID;
 
 /**
  * AvailableState - Concrete state representing an available book.
@@ -17,26 +18,32 @@ public class AvailableState implements BookState {
      */
     @Override
     public void borrow(Book book, User user) {
-        System.out.println("Book '" + book.getTitle() + "' has been borrowed by " + user.getName());
-        
         // Calculate due date based on user type
         LocalDate borrowDate = LocalDate.now();
-        LocalDate dueDate = borrowDate.plusDays(user.getBorrowLimit());
+        LocalDate dueDate = borrowDate.plusDays(user.getBorrowPeriodInDays());
         
         // Create borrow record
         BorrowRecord record = new BorrowRecord(
-            "BR-" + System.currentTimeMillis(),
+            "BR-" + UUID.randomUUID().toString().substring(0, 8), // Use UUID for unique IDs
             book,
             user,
             borrowDate,
             dueDate
         );
         
-        // Add to book's history
-        book.addBorrowRecord(record);
+        // Add the record to the user and the book's history
+        user.addBorrowRecord(record);
+        book.getBorrowHistoryInternal().add(record);
+        // Add the record to the global borrowRecords list if possible
+        try {
+            service.LibraryManagementSystem.getInstance().addBorrowRecord(record);
+        } catch (Exception e) {
+            // If singleton or static access is not available, this will be a no-op
+        }
         
         // Transition to BorrowedState
-        book.setAvailabilityStatus(new BorrowedState());
+        book.setState(new BorrowedState());
+        System.out.println("\nBook '" + book.getTitle() + "' has been borrowed by " + user.getName());
     }
 
     /**

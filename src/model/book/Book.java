@@ -86,6 +86,11 @@ public abstract class Book {
         return new ArrayList<>(borrowHistory);
     }
 
+    // Internal method for states to modify history
+    public List<BorrowRecord> getBorrowHistoryInternal() {
+        return this.borrowHistory;
+    }
+
     /**
      * Gets the metadata of the book.
      * @return the metadata list
@@ -98,7 +103,7 @@ public abstract class Book {
      * Sets the availability status of the book.
      * Used by state objects to transition between states.
      */
-    public void setAvailabilityStatus(BookState state) {
+    public void setState(BookState state) {
         this.availabilityStatus = state;
     }
 
@@ -112,11 +117,18 @@ public abstract class Book {
     // Abstract methods to be implemented by concrete book classes
     public abstract String getDescription();
 
-    public abstract void borrow(User user);
+    // --- State-Delegated Methods ---
+    public void borrow(User user) {
+        availabilityStatus.borrow(this, user);
+    }
 
-    public abstract void returnBook();
+    public void returnBook() {
+        availabilityStatus.returnBook(this);
+    }
 
-    public abstract void reserve(User user);
+    public void reserve(User user) {
+        availabilityStatus.reserve(this, user);
+    }
 
     /**
      * Static inner class BookBuilder for Builder Pattern.

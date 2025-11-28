@@ -45,31 +45,4 @@ public class BasicBook extends Book {
         
         return description.toString();
     }
-
-    /**
-     * Borrows the book using State Pattern.
-     * Delegates to the current state object.
-     */
-    @Override
-    public void borrow(User user) {
-        availabilityStatus.borrow(this, user);
-    }
-
-    /**
-     * Returns the book using State Pattern.
-     * Delegates to the current state object.
-     */
-    @Override
-    public void returnBook() {
-        availabilityStatus.returnBook(this);
-    }
-
-    /**
-     * Reserves the book using State Pattern.
-     * Delegates to the current state object.
-     */
-    @Override
-    public void reserve(User user) {
-        availabilityStatus.reserve(this, user);
-    }
 }

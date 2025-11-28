@@ -2,6 +2,7 @@ package command;
 
 import model.book.Book;
 import model.user.User;
+import exception.LibraryException;
 
 /**
  * Concrete command for reserving a book.
@@ -27,6 +28,10 @@ public class ReserveCommand implements Command {
      */
     @Override
     public void execute() {
-        user.reserveBook(book);
+        try {
+            user.reserveBook(book);
+        } catch (LibraryException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 }

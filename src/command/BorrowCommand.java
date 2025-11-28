@@ -27,6 +27,10 @@ public class BorrowCommand implements Command {
      */
     @Override
     public void execute() {
-        user.borrowBook(book);
+        try {
+            user.borrowBook(book);
+        } catch (exception.LibraryException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 }

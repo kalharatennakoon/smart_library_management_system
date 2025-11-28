@@ -11,7 +11,6 @@ import model.user.fines.StudentFineStrategy;
  * - Fine rate: LKR 50/day
  */
 public class Student extends User {
-    private int borrowLimit;
 
     /**
      * Constructor for Student.
@@ -22,16 +21,14 @@ public class Student extends User {
      */
     public Student(String userId, String name, String email, String contactNumber) {
         super(userId, name, email, contactNumber);
-        this.borrowLimit = 5; // Students can borrow up to 5 books
     }
 
     /**
-     * Returns the borrow limit for students.
-     * Also represents the loan period in days (14 days for students).
-     * @return Maximum number of books a student can borrow
+     * Returns the borrow period in days for students.
+     * @return Loan period in days (14 days for students)
      */
     @Override
-    public int getBorrowLimit() {
+    public int getBorrowPeriodInDays() {
         return 14; // 14 days loan period for students
     }
 
@@ -46,9 +43,11 @@ public class Student extends User {
 
     /**
      * Gets the maximum number of books a student can borrow simultaneously.
-     * @return Maximum book borrowing capacity
+     * NOTE: This value (5) is an assumption.
+     * @return Maximum book borrowing capacity (5 books)
      */
+    @Override
     public int getMaxBorrowCapacity() {
-        return borrowLimit;
+        return 5; // Students can borrow up to 5 books
     }
 }
