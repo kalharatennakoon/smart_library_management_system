@@ -23,7 +23,7 @@ public abstract class K2558859_BookDecorator extends K2558859_Book {
               decoratedBook.getTitle(), 
               decoratedBook.getAuthor(), 
               decoratedBook.getCategory(), 
-              decoratedBook.getISBN(),
+              decoratedBook.getIsbn(),
               decoratedBook.getMetadata());
         this.decoratedBook = decoratedBook;
     }

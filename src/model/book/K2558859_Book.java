@@ -70,10 +70,6 @@ public abstract class K2558859_Book {
         return category;
     }
 
-    public String getISBN() {
-        return isbn;
-    }
-
     public String getIsbn() {
         return isbn;
     }
