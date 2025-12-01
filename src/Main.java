@@ -28,6 +28,7 @@ public class Main {
     private Scanner scanner;
     private int nextBookId = 1;
     private int nextUserId = 1;
+    private int nextLibrarianId = 1;
 
     public Main() {
         this.library = new K2558859_LibraryManagementSystem();
@@ -35,6 +36,7 @@ public class Main {
         this.scanner = new Scanner(System.in);
         this.nextBookId = 1;
         this.nextUserId = 1;
+        this.nextLibrarianId = 1;
     }
 
     public static void main(String[] args) {
@@ -832,6 +834,8 @@ public class Main {
             return prefix + String.format("%04d", nextBookId++);
         } else if ("U".equals(prefix)) {
             return prefix + String.format("%04d", nextUserId++);
+        } else if ("L".equals(prefix)) {
+            return prefix + String.format("%04d", nextLibrarianId++);
         }
         // Fallback for any other prefixes, though not expected
         return prefix + String.format("%04d", new Random().nextInt(10000));

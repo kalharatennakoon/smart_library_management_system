@@ -2,6 +2,7 @@ package service;
 
 import model.book.K2558859_Book;
 import model.user.K2558859_User;
+import model.user.K2558859_Librarian;
 import model.borrow.K2558859_BorrowRecord;
 import model.reservation.K2558859_Reservation;
 import model.report.K2558859_Report;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 public class K2558859_LibraryManagementSystem {
     private List<K2558859_Book> books;
     private List<K2558859_User> users;
+    private List<K2558859_Librarian> librarians;
     private List<K2558859_BorrowRecord> borrowRecords;
     private List<K2558859_Reservation> reservations;
     private K2558859_CommandInvoker commandInvoker;
@@ -40,6 +42,7 @@ public class K2558859_LibraryManagementSystem {
         instance = this;
         this.books = new ArrayList<>();
         this.users = new ArrayList<>();
+        this.librarians = new ArrayList<>();
         this.borrowRecords = new ArrayList<>();
         this.reservations = new ArrayList<>();
         this.reports = new ArrayList<>();
@@ -359,6 +362,48 @@ public class K2558859_LibraryManagementSystem {
         return prefix + "-" + System.currentTimeMillis();
     }
 
+    // ----- Librarian Management -----
+
+    /**
+     * Registers a new librarian in the library system.
+     * @param librarian The librarian to be registered
+     */
+    public void registerLibrarian(K2558859_Librarian librarian) {
+        if (findLibrarianById(librarian.getLibrarianId()) != null) {
+            System.out.println("Error: Librarian with ID " + librarian.getLibrarianId() + " already exists.");
+            return;
+        }
+        librarians.add(librarian);
+        System.out.println("Librarian '" + librarian.getName() + "' registered successfully.");
+    }
+
+    /**
+     * Removes a librarian from the library system.
+     * @param librarianId The ID of the librarian to be removed
+     */
+    public void removeLibrarian(String librarianId) {
+        K2558859_Librarian librarian = findLibrarianById(librarianId);
+        if (librarian == null) {
+            System.out.println("Error: Librarian with ID " + librarianId + " not found.");
+            return;
+        }
+
+        librarians.remove(librarian);
+        System.out.println("Librarian '" + librarian.getName() + "' removed successfully.");
+    }
+
+    /**
+     * Finds a librarian by their ID.
+     * @param librarianId The librarian ID to search for
+     * @return The K2558859_Librarian object if found, null otherwise
+     */
+    private K2558859_Librarian findLibrarianById(String librarianId) {
+        return librarians.stream()
+            .filter(librarian -> librarian.getLibrarianId().equalsIgnoreCase(librarianId))
+            .findFirst()
+            .orElse(null);
+    }
+
     // ----- Getters -----
 
     public List<K2558859_Book> getBooks() {
@@ -379,6 +424,10 @@ public class K2558859_LibraryManagementSystem {
 
     public List<K2558859_Report> getReports() {
         return new ArrayList<>(reports);
+    }
+
+    public List<K2558859_Librarian> getLibrarians() {
+        return new ArrayList<>(librarians);
     }
 
     public static K2558859_LibraryManagementSystem getInstance() {
