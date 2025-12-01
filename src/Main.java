@@ -1,10 +1,10 @@
 import model.book.*;
 import model.book.decorator.*;
 import model.user.*;
-import model.report.Report;
-import service.LibraryManagementSystem;
-import service.notification.NotificationService;
-import service.notification.UserNotificationObserver;
+import model.report.K2558859_Report;
+import service.K2558859_LibraryManagementSystem;
+import service.notification.K2558859_NotificationService;
+import service.notification.K2558859_UserNotificationObserver;
 import util.ValidationUtil;
 import java.util.Scanner;
 import java.util.Random;
@@ -15,7 +15,7 @@ import java.util.Random;
  * Implements comprehensive input validation and error handling.
  * 
  * Features:
- * - Book management (add, update, remove, decorate)
+ * - K2558859_Book management (add, update, remove, decorate)
  * - User management (register, remove, view)
  * - Borrowing operations (borrow, return, calculate fines)
  * - Reservation management
@@ -23,15 +23,15 @@ import java.util.Random;
  * - Report generation
  */
 public class Main {
-    private LibraryManagementSystem library;
-    private NotificationService notificationService;
+    private K2558859_LibraryManagementSystem library;
+    private K2558859_NotificationService notificationService;
     private Scanner scanner;
     private int nextBookId = 1;
     private int nextUserId = 1;
 
     public Main() {
-        this.library = new LibraryManagementSystem();
-        this.notificationService = new NotificationService();
+        this.library = new K2558859_LibraryManagementSystem();
+        this.notificationService = new K2558859_NotificationService();
         this.scanner = new Scanner(System.in);
         this.nextBookId = 1;
         this.nextUserId = 1;
@@ -134,7 +134,7 @@ public class Main {
         String author = getStringInput("Author: ");
         
         String bookId = generateId("B"); // Auto-generate book ID
-        Book book = new BasicBook(bookId, title, author, null, null); // Pass null for category and ISBN
+        K2558859_Book book = new K2558859_BasicBook(bookId, title, author, null, null); // Pass null for category and ISBN
         library.addBook(book);
         
         System.out.println("\nBook added successfully!");
@@ -151,14 +151,14 @@ public class Main {
         String genre = getStringInput("Genre: ");
         
         String bookId = generateId("B"); // Auto-generate book ID
-        Book.BookBuilder builder = new Book.BookBuilder(bookId, title, author, category, isbn)
+        K2558859_Book.K2558859_BookBuilder builder = new K2558859_Book.K2558859_BookBuilder(bookId, title, author, category, isbn)
             .setYear(year)
             .setGenre(genre);
         
-        Book book = builder.build();
+        K2558859_Book book = builder.build();
         library.addBook(book);
         
-        System.out.println("\nBook created with Builder Pattern!");
+        System.out.println("\nBook created successfully!");
     }
 
     private void decorateBook() {
@@ -171,7 +171,7 @@ public class Main {
         viewAllBooks();
         
         String bookId = getStringInput("\nEnter Book ID to decorate: ");
-        Book baseBook = findBookById(bookId);
+        K2558859_Book baseBook = findBookById(bookId);
         
         if (baseBook == null) {
             System.out.println("\nBook not found!");
@@ -185,22 +185,22 @@ public class Main {
         System.out.println("4. All Decorations (Featured + Recommended + Special Edition)");
         
         int choice = getIntInput("Choice: ");
-        Book decoratedBook = baseBook;
+        K2558859_Book decoratedBook = baseBook;
         
         switch (choice) {
             case 1:
-                decoratedBook = new FeaturedDecorator(baseBook);
+                decoratedBook = new K2558859_FeaturedDecorator(baseBook);
                 break;
             case 2:
-                decoratedBook = new RecommendedDecorator(baseBook);
+                decoratedBook = new K2558859_RecommendedDecorator(baseBook);
                 break;
             case 3:
-                decoratedBook = new SpecialEditionDecorator(baseBook);
+                decoratedBook = new K2558859_SpecialEditionDecorator(baseBook);
                 break;
             case 4:
-                decoratedBook = new FeaturedDecorator(
-                    new RecommendedDecorator(
-                        new SpecialEditionDecorator(baseBook)));
+                decoratedBook = new K2558859_FeaturedDecorator(
+                    new K2558859_RecommendedDecorator(
+                        new K2558859_SpecialEditionDecorator(baseBook)));
                 break;
         }
         
@@ -223,7 +223,7 @@ public class Main {
         String bookId = getStringInput("\nEnter Book ID to remove: ").trim();
         
         // Find the book first to confirm its existence and details
-        Book bookToRemove = findBookById(bookId);
+        K2558859_Book bookToRemove = findBookById(bookId);
 
         if (bookToRemove == null) {
             System.out.println("\nError: Book with ID " + bookId + " not found.");
@@ -253,7 +253,7 @@ public class Main {
         System.out.printf("%-10s %-30s %-20s %-15s %-20s %-15s\n", "Book ID", "Title", "Author", "Status", "Category", "ISBN");
         System.out.println("-".repeat(120));
         
-        for (Book book : library.getBooks()) {
+        for (K2558859_Book book : library.getBooks()) {
             System.out.printf("%-10s %-30s %-20s %-15s %-20s %-15s\n",
                 book.getBookId(),
                 truncate(book.getTitle(), 30),
@@ -337,22 +337,22 @@ public class Main {
         }
         
         String userId = generateId("U"); // Auto-generate user ID
-        User user = null;
+        K2558859_User user = null;
         switch (userType) {
             case "Student":
-                user = new Student(userId, name, email, contactNumber);
+                user = new K2558859_Student(userId, name, email, contactNumber);
                 System.out.println("\nStudent Details:");
                 System.out.println("  Loan Period: 14 days");
                 System.out.println("  Fine Rate: LKR 50/day");
                 break;
             case "Faculty":
-                user = new Faculty(userId, name, email, contactNumber);
+                user = new K2558859_Faculty(userId, name, email, contactNumber);
                 System.out.println("\nFaculty Details:");
                 System.out.println("  Loan Period: 30 days");
                 System.out.println("  Fine Rate: LKR 20/day");
                 break;
             case "Guest":
-                user = new Guest(userId, name, email, contactNumber);
+                user = new K2558859_Guest(userId, name, email, contactNumber);
                 System.out.println("\nGuest Details:");
                 System.out.println("  Loan Period: 7 days");
                 System.out.println("  Fine Rate: LKR 100/day");
@@ -362,10 +362,10 @@ public class Main {
         if (user != null) {
             library.registerUser(user);
             
-            // Ask if user wants to register for notifications (Observer Pattern)
-            System.out.print("\nRegister for notifications (Observer Pattern)? (y/n): ");
+            // Ask if user wants to register for notifications
+            System.out.print("\nRegister for notifications? (y/n): ");
             if (scanner.nextLine().trim().equalsIgnoreCase("y")) {
-                UserNotificationObserver observer = new UserNotificationObserver(user);
+                K2558859_UserNotificationObserver observer = new K2558859_UserNotificationObserver(user);
                 notificationService.registerObserver(observer);
                 System.out.println("User registered as observer!");
             }
@@ -384,7 +384,7 @@ public class Main {
         String userId = getStringInput("\nEnter User ID to remove: ").trim();
 
         // Find the user first to confirm existence and details
-        User userToRemove = findUserById(userId);
+        K2558859_User userToRemove = findUserById(userId);
 
         if (userToRemove == null) {
             System.out.println("\nError: User with ID " + userId + " not found.");
@@ -414,7 +414,7 @@ public class Main {
         System.out.printf("%-10s %-25s %-15s %-15s\n", "User ID", "Name", "Type", "Active Borrows");
         System.out.println("-".repeat(70));
         
-        for (User user : library.getUsers()) {
+        for (K2558859_User user : library.getUsers()) {
             System.out.printf("%-10s %-25s %-15s %-15d\n",
                 user.getUserId(),
                 truncate(user.getName(), 25),
@@ -474,12 +474,10 @@ public class Main {
         
         String bookId = getStringInput("\nEnter Book ID: ").trim();
         String userId = getStringInput("Enter User ID: ").trim();
-        
-        System.out.println("\nExecuting BorrowCommand (Command Pattern)...");
 
         // Find the actual book and user to get correctly-cased IDs
-        Book bookToBorrow = findBookById(bookId);
-        User userToBorrow = findUserById(userId);
+        K2558859_Book bookToBorrow = findBookById(bookId);
+        K2558859_User userToBorrow = findUserById(userId);
 
         if (bookToBorrow == null) {
             System.out.println("\nError: Book with ID " + bookId + " not found.");
@@ -505,12 +503,10 @@ public class Main {
         
         String bookId = getStringInput("\nEnter Book ID: ").trim();
         String userId = getStringInput("Enter User ID: ").trim();
-        
-        System.out.println("\nExecuting ReturnCommand (Command Pattern)...");
 
         // Find the actual book and user to get correctly-cased IDs
-        Book bookToReturn = findBookById(bookId);
-        User userReturning = findUserById(userId);
+        K2558859_Book bookToReturn = findBookById(bookId);
+        K2558859_User userReturning = findUserById(userId);
 
         if (bookToReturn == null) {
             System.out.println("\nError: Book with ID " + bookId + " not found.");
@@ -522,7 +518,6 @@ public class Main {
         }
 
         library.returnBook(bookToReturn.getBookId(), userReturning.getUserId());
-        System.out.println("(Strategy Pattern used for fine calculation)");
     }
 
     private void viewBorrowRecords() {
@@ -596,12 +591,10 @@ public class Main {
         
         String bookId = getStringInput("\nEnter Book ID: ").trim();
         String userId = getStringInput("Enter User ID: ").trim();
-        
-        System.out.println("\nExecuting ReserveCommand..."); // Command Pattern
 
         // Find the actual book and user to get correctly-cased IDs
-        Book bookToReserve = findBookById(bookId);
-        User userReserving = findUserById(userId);
+        K2558859_Book bookToReserve = findBookById(bookId);
+        K2558859_User userReserving = findUserById(userId);
 
         if (bookToReserve == null) {
             System.out.println("\nError: Book with ID " + bookId + " not found.");
@@ -613,7 +606,6 @@ public class Main {
         }
 
         library.reserveBook(bookToReserve.getBookId(), userReserving.getUserId());
-        System.out.println("(State Pattern transitions book to Reserved state)");
     }
 
     private void viewReservations() {
@@ -657,7 +649,8 @@ public class Main {
                     sendDueDateReminder();
                     break;
                 case 3:
-                    System.out.println("\nRegistered Observers: " + notificationService.getObserverCount());
+                    System.out.println("\nObserver notification feature - Count not available");
+                    // System.out.println("\nRegistered Observers: " + notificationService.getObserverCount());
                     break;
                 case 0:
                     return; // Exit the menu
@@ -675,11 +668,12 @@ public class Main {
         
         viewAllBooks();
         String bookId = getStringInput("\nEnter Book ID: ").trim();
-        Book book = findBookById(bookId);
+        K2558859_Book book = findBookById(bookId);
         
         if (book != null) {
             String message = getStringInput("Enter notification message: ");
-            notificationService.sendBookNotification(book, message);
+            notificationService.notifyObservers(book, message);
+            // notificationService.sendBookNotification(book, message);
         }
     }
 
@@ -691,11 +685,13 @@ public class Main {
         
         viewAllBooks();
         String bookId = getStringInput("\nEnter Book ID: ").trim();
-        Book book = findBookById(bookId);
+        K2558859_Book book = findBookById(bookId);
         
         if (book != null) {
             int days = getIntInput("Days until due: ");
-            notificationService.sendDueDateReminder(book, days);
+            String message = "Book '" + book.getTitle() + "' is due in " + days + " days";
+            notificationService.notifyObservers(book, message);
+            // notificationService.sendDueDateReminder(book, days);
         }
     }
 
@@ -731,7 +727,7 @@ public class Main {
 
             if (reportType != null) {
                 System.out.println("\nGenerating report...");
-                Report report = library.generateReport(reportType);
+                K2558859_Report report = library.generateReport(reportType);
                 System.out.println();
                 report.display();
             }
@@ -747,7 +743,7 @@ public class Main {
         System.out.println("Total Users: " + library.getUsers().size());
         System.out.println("Total Borrow Records: " + library.getBorrowRecords().size());
         System.out.println("Total Reservations: " + library.getReservations().size());
-        System.out.println("Registered Observers: " + notificationService.getObserverCount());
+        // System.out.println("Registered Observers: " + notificationService.getObserverCount());
         System.out.println("Total Reports: " + library.getReports().size());
     }
 
@@ -806,14 +802,14 @@ public class Main {
         }
     }
 
-    private Book findBookById(String bookId) {
+    private K2558859_Book findBookById(String bookId) {
         return library.getBooks().stream()
             .filter(book -> book.getBookId().equalsIgnoreCase(bookId))
             .findFirst()
             .orElse(null);
     }
     
-    private User findUserById(String userId) {
+    private K2558859_User findUserById(String userId) {
         return library.getUsers().stream()
             .filter(user -> user.getUserId().equalsIgnoreCase(userId))
             .findFirst()
