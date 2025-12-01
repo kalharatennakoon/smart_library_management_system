@@ -7,6 +7,9 @@ import model.reservation.Reservation;
 import model.report.Report;
 import command.*;
 import exception.LibraryException;
+import exception.BookNotFoundException;
+import exception.UserNotFoundException;
+import exception.InvalidOperationException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -142,13 +145,15 @@ public class LibraryManagementSystem {
      * Borrows a book for a user using Command Pattern.
      * @param bookId The ID of the book to borrow
      * @param userId The ID of the user borrowing the book
+     * @throws BookNotFoundException if the book is not found
+     * @throws UserNotFoundException if the user is not found
      */
     public void borrowBook(String bookId, String userId) {
         try {
             Book book = findBookById(bookId);
             User user = findUserById(userId);
-            if (book == null) throw new LibraryException("Book with ID " + bookId + " not found.");
-            if (user == null) throw new LibraryException("User with ID " + userId + " not found.");
+            if (book == null) throw new BookNotFoundException(bookId);
+            if (user == null) throw new UserNotFoundException(userId);
 
             Command borrowCommand = new BorrowCommand(book, user);
             commandInvoker.setCommand(borrowCommand);
@@ -162,13 +167,15 @@ public class LibraryManagementSystem {
      * Returns a book using Command Pattern.
      * @param bookId The ID of the book to return
      * @param userId The ID of the user returning the book
+     * @throws BookNotFoundException if the book is not found
+     * @throws UserNotFoundException if the user is not found
      */
     public void returnBook(String bookId, String userId) {
         try {
             Book book = findBookById(bookId);
             User user = findUserById(userId);
-            if (book == null) throw new LibraryException("Book with ID " + bookId + " not found.");
-            if (user == null) throw new LibraryException("User with ID " + userId + " not found.");
+            if (book == null) throw new BookNotFoundException(bookId);
+            if (user == null) throw new UserNotFoundException(userId);
 
             Command returnCommand = new ReturnCommand(book, user);
             commandInvoker.setCommand(returnCommand);
@@ -182,13 +189,15 @@ public class LibraryManagementSystem {
      * Reserves a book for a user using Command Pattern.
      * @param bookId The ID of the book to reserve
      * @param userId The ID of the user reserving the book
+     * @throws BookNotFoundException if the book is not found
+     * @throws UserNotFoundException if the user is not found
      */
     public void reserveBook(String bookId, String userId) {
         try {
             Book book = findBookById(bookId);
             User user = findUserById(userId);
-            if (book == null) throw new LibraryException("Book with ID " + bookId + " not found.");
-            if (user == null) throw new LibraryException("User with ID " + userId + " not found.");
+            if (book == null) throw new BookNotFoundException(bookId);
+            if (user == null) throw new UserNotFoundException(userId);
 
             Command reserveCommand = new ReserveCommand(book, user);
             commandInvoker.setCommand(reserveCommand);

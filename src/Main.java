@@ -5,12 +5,22 @@ import model.report.Report;
 import service.LibraryManagementSystem;
 import service.notification.NotificationService;
 import service.notification.UserNotificationObserver;
+import util.ValidationUtil;
 import java.util.Scanner;
 import java.util.Random;
 
 /**
  * Main class - Interactive CLI for the Smart Library Management System.
  * Provides menu-driven interaction with user input for all library operations.
+ * Implements comprehensive input validation and error handling.
+ * 
+ * Features:
+ * - Book management (add, update, remove, decorate)
+ * - User management (register, remove, view)
+ * - Borrowing operations (borrow, return, calculate fines)
+ * - Reservation management
+ * - Notification system
+ * - Report generation
  */
 public class Main {
     private LibraryManagementSystem library;
@@ -292,26 +302,38 @@ public class Main {
         }
     }
 
+    /**
+     * Registers a new user of the specified type (Student, Faculty, or Guest).
+     * Implements input validation for email and contact number.
+     * 
+     * Email validation: Must match pattern username@domain.extension
+     * Contact number validation: Must be exactly 10 digits
+     * 
+     * @param userType The type of user to register ("Student", "Faculty", or "Guest")
+     */
     private void registerUser(String userType) {
         printSubHeader("Register " + userType);
         
         String name = getStringInput("Name: ");
+        
+        // Email validation with loop until valid input
         String email;
         while (true) {
             email = getStringInput("Email: ");
-            if (email.matches("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
+            if (ValidationUtil.isValidEmail(email)) {
                 break;
             }
-            System.out.println("Invalid email format. Please try again.\n");
+            System.out.println(ValidationUtil.getEmailErrorMessage() + "\n");
         }
 
+        // Contact number validation with loop until valid input
         String contactNumber;
         while (true) {
             contactNumber = getStringInput("Contact Number: ");
-            if (contactNumber.matches("^\\d{10}$")) {
+            if (ValidationUtil.isValidContactNumber(contactNumber)) {
                 break;
             }
-            System.out.println("Invalid contact number. Contact Number should contain 10 digits.\n");
+            System.out.println(ValidationUtil.getContactNumberErrorMessage() + "\n");
         }
         
         String userId = generateId("U"); // Auto-generate user ID
