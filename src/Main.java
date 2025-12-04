@@ -120,9 +120,11 @@ public class Main {
         
         String title = getStringInput("Title: ");
         String author = getStringInput("Author: ");
+        String category = getStringInput("Category: ");
+        String isbn = getStringInput("ISBN: ");
         
         String bookId = generateId("B"); // Auto-generate book ID
-        K2558859_Book book = new K2558859_BasicBook(bookId, title, author, null, null); // Pass null for category and ISBN
+        K2558859_Book book = new K2558859_BasicBook(bookId, title, author, category, isbn);
         library.addBook(book);
         
         System.out.println("\nBook added successfully!");
