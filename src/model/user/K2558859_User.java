@@ -54,6 +54,13 @@ public abstract class K2558859_User {
         return Collections.unmodifiableList(reservations);
     }
 
+    public int getActiveBorrowCount() {
+        return (int) borrowedBooks.stream()
+            .filter(record -> record.getReturnDate() == null)
+            .count();
+    }
+
+    // Public Methods
     // Borrows a book for the user
     public void borrowBook(K2558859_Book book) throws LibraryException {
         // Check if user has reached borrow limit
@@ -125,13 +132,6 @@ public abstract class K2558859_User {
     // Adds a borrow record to the user's borrowed books list
     public void addBorrowRecord(K2558859_BorrowRecord record) {
         borrowedBooks.add(record);
-    }
-
-    // Gets the number of currently active (unreturned) borrowed books
-    public int getActiveBorrowCount() {
-        return (int) borrowedBooks.stream()
-            .filter(record -> record.getReturnDate() == null)
-            .count();
     }
 
     // Abstract methods to be implemented by subclasses (Strategy Pattern)
