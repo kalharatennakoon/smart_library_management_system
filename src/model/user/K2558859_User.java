@@ -60,10 +60,9 @@ public abstract class K2558859_User {
             .count();
     }
 
-    // Public Methods
+
     // Borrows a book for the user
     public void borrowBook(K2558859_Book book) throws LibraryException {
-        // Check if user has reached borrow limit
         long activeBorrows = borrowedBooks.stream()
             .filter(record -> record.getReturnDate() == null)
             .count();
@@ -72,15 +71,11 @@ public abstract class K2558859_User {
             throw new LibraryException(name + " has reached the borrow limit of " + getMaxBorrowCapacity() + " books.");
         }
 
-        // Delegate to book's state pattern
         book.borrow(this);
-        
-        // Add to user's borrowed books (will be done through addBorrowRecord)
     }
 
     // Returns a borrowed book
     public void returnBook(K2558859_Book book) throws LibraryException {
-        // Find the active borrow record for this book
         K2558859_BorrowRecord recordToUpdate = borrowedBooks.stream()
             .filter(record -> record.getBook().getBookId().equals(book.getBookId()) && record.getReturnDate() == null)
             .findFirst()
@@ -90,10 +85,8 @@ public abstract class K2558859_User {
             throw new LibraryException(name + " has not borrowed this book or has already returned it.");
         }
 
-        // Delegate to book's state pattern
         book.returnBook();
 
-        // Mark the borrow record as returned
         recordToUpdate.setReturnDate(LocalDate.now());
         System.out.println("Book '" + book.getTitle() + "' returned by " + name + ".");
     }
@@ -108,7 +101,6 @@ public abstract class K2558859_User {
             throw new LibraryException(name + " has already reserved this book.");
         }
 
-        // Delegate to book's state pattern
         book.reserve(this);
     }
 
@@ -135,7 +127,6 @@ public abstract class K2558859_User {
     }
 
     // Abstract methods to be implemented by subclasses (Strategy Pattern)
-    
     // Gets the borrow period in days based on membership type
     public abstract int getBorrowPeriodInDays();
 
