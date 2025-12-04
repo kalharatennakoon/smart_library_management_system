@@ -6,18 +6,11 @@ import model.borrow.K2558859_BorrowRecord;
 import model.user.K2558859_User;
 import java.util.List;
 
-/**
- * Abstract K2558859_BookDecorator class for Decorator Pattern.
- * Wraps a K2558859_Book object and delegates all operations to it.
- * Subclasses can enhance the book's description with additional features.
- */
+// Abstract K2558859_BookDecorator class for Decorator Pattern
 public abstract class K2558859_BookDecorator extends K2558859_Book {
     protected K2558859_Book decoratedBook;
 
-    /**
-     * Constructor for K2558859_BookDecorator.
-     * @param decoratedBook The book object to be decorated
-     */
+    // Constructor for K2558859_BookDecorator
     public K2558859_BookDecorator(K2558859_Book decoratedBook) {
         super(decoratedBook.getBookId(), 
               decoratedBook.getTitle(), 
@@ -28,42 +21,31 @@ public abstract class K2558859_BookDecorator extends K2558859_Book {
         this.decoratedBook = decoratedBook;
     }
 
-    /**
-     * Delegates borrow operation to the decorated book.
-     */
+    // Delegates borrow operation to the decorated book
     @Override
     public void borrow(K2558859_User user) {
         decoratedBook.borrow(user);
     }
 
-    /**
-     * Delegates return operation to the decorated book.
-     */
+    // Delegates return operation to the decorated book
     @Override
     public void returnBook() {
         decoratedBook.returnBook();
     }
 
-    /**
-     * Delegates reserve operation to the decorated book.
-     */
+    // Delegates reserve operation to the decorated book
     @Override
     public void reserve(K2558859_User user) {
         decoratedBook.reserve(user);
     }
 
-    /**
-     * Gets the description from the decorated book.
-     * Subclasses will override this to add decoration tags.
-     */
+    // Gets the description from the decorated book
     @Override
     public String getDescription() {
         return decoratedBook.getDescription();
     }
 
-    /**
-     * Override getters to delegate to decorated book for accurate state.
-     */
+    // Override getters to delegate to decorated book for accurate state
     @Override
     public K2558859_BookState getAvailabilityStatus() {
         return decoratedBook.getAvailabilityStatus();

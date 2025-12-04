@@ -8,12 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Abstract K2558859_Book class representing a book in the library system.
- * Uses State Pattern for availability status.
- * Serves as the Component in the Decorator Pattern.
- * Contains K2558859_BookBuilder as a static inner class for the Builder Pattern.
- */
+// Abstract K2558859_Book class representing a book in the library system
 public abstract class K2558859_Book {
     protected String bookId;
     protected String title;
@@ -24,10 +19,7 @@ public abstract class K2558859_Book {
     protected List<K2558859_BorrowRecord> borrowHistory;
     protected List<String> metadata;
 
-    /**
-     * Constructor for K2558859_Book.
-     * Initializes a book with available state and empty borrow history.
-     */
+    // Constructor for K2558859_Book
     protected K2558859_Book(String bookId, String title, String author, String category, String isbn) {
         this.bookId = bookId;
         this.title = title;
@@ -39,9 +31,7 @@ public abstract class K2558859_Book {
         this.metadata = new ArrayList<>();
     }
 
-    /**
-     * Constructor with metadata (used by K2558859_BookBuilder).
-     */
+    // Constructor with metadata (used by K2558859_BookBuilder)
     protected K2558859_Book(String bookId, String title, String author, String category, String isbn, List<String> metadata) {
         this.bookId = bookId;
         this.title = title;
@@ -87,25 +77,17 @@ public abstract class K2558859_Book {
         return this.borrowHistory;
     }
 
-    /**
-     * Gets the metadata of the book.
-     * @return the metadata list
-     */
+    // Gets the metadata of the book
     public List<String> getMetadata() {
         return metadata;
     }
 
-    /**
-     * Sets the availability status of the book.
-     * Used by state objects to transition between states.
-     */
+    // Sets the availability status of the book
     public void setState(K2558859_BookState state) {
         this.availabilityStatus = state;
     }
 
-    /**
-     * Adds a borrow record to the book's history.
-     */
+    // Adds a borrow record to the book's history
     public void addBorrowRecord(K2558859_BorrowRecord record) {
         this.borrowHistory.add(record);
     }
@@ -126,10 +108,7 @@ public abstract class K2558859_Book {
         availabilityStatus.reserve(this, user);
     }
 
-    /**
-     * Static inner class K2558859_BookBuilder for Builder Pattern.
-     * Allows creation of complex book objects with optional metadata.
-     */
+    // Static inner class K2558859_BookBuilder for Builder Pattern
     public static class K2558859_BookBuilder {
         private String bookId;
         private String title;
@@ -140,9 +119,7 @@ public abstract class K2558859_Book {
         private int year;
         private String genre;
 
-        /**
-         * Constructor for K2558859_BookBuilder with required parameters.
-         */
+        // Constructor for K2558859_BookBuilder with required parameters
         public K2558859_BookBuilder(String bookId, String title, String author, String category, String isbn) {
             this.bookId = bookId;
             this.title = title;
@@ -152,11 +129,7 @@ public abstract class K2558859_Book {
             this.metadata = new ArrayList<>();
         }
 
-        /**
-         * Adds optional metadata to the book (reviews, tags, editions, etc.).
-         * @param metadataItem A metadata item to add
-         * @return The K2558859_BookBuilder instance for method chaining
-         */
+        // Adds optional metadata to the book (reviews, tags, editions, etc.)
         public K2558859_BookBuilder addMetadata(String metadataItem) {
             this.metadata.add(metadataItem);
             return this;
@@ -174,10 +147,7 @@ public abstract class K2558859_Book {
             return this;
         }
 
-        /**
-         * Builds and returns a K2558859_BasicBook instance.
-         * @return A new K2558859_BasicBook object with the configured properties
-         */
+        // Builds and returns a K2558859_BasicBook instance
         public K2558859_BasicBook build() {
             return new K2558859_BasicBook(bookId, title, author, category, isbn, metadata);
         }

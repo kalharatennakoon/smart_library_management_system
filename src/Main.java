@@ -9,19 +9,7 @@ import util.ValidationUtil;
 import java.util.Scanner;
 import java.util.Random;
 
-/**
- * Main class - Interactive CLI for the Smart Library Management System.
- * Provides menu-driven interaction with user input for all library operations.
- * Implements comprehensive input validation and error handling.
- * 
- * Features:
- * - K2558859_Book management (add, update, remove, decorate)
- * - User management (register, remove, view)
- * - Borrowing operations (borrow, return, calculate fines)
- * - Reservation management
- * - Notification system
- * - Report generation
- */
+// Main class - Interactive CLI for the Smart Library Management System
 public class Main {
     private K2558859_LibraryManagementSystem library;
     private K2558859_NotificationService notificationService;
@@ -44,9 +32,7 @@ public class Main {
         app.run();
     }
 
-    /**
-     * Main CLI loop - displays menu and processes user choices.
-     */
+    // Main CLI loop - displays menu and processes user choices
     public void run() {
         printWelcomeBanner();
         
@@ -304,15 +290,7 @@ public class Main {
         }
     }
 
-    /**
-     * Registers a new user of the specified type (Student, Faculty, or Guest).
-     * Implements input validation for email and contact number.
-     * 
-     * Email validation: Must match pattern username@domain.extension
-     * Contact number validation: Must be exactly 10 digits
-     * 
-     * @param userType The type of user to register ("Student", "Faculty", or "Guest")
-     */
+    // Registers a new user of the specified type (Student, Faculty, or Guest)
     private void registerUser(String userType) {
         printSubHeader("Register " + userType);
         

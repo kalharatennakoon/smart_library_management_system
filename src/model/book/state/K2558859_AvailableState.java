@@ -6,16 +6,10 @@ import model.borrow.K2558859_BorrowRecord;
 import java.time.LocalDate;
 import java.util.UUID;
 
-/**
- * K2558859_AvailableState - Concrete state representing an available book.
- * In this state, books can be borrowed but not returned or reserved.
- */
+// K2558859_AvailableState - Concrete state representing an available book
 public class K2558859_AvailableState implements K2558859_BookState {
 
-    /**
-     * Allows borrowing when the book is available.
-     * Transitions the book to K2558859_BorrowedState.
-     */
+    // Allows borrowing when the book is available
     @Override
     public void borrow(K2558859_Book book, K2558859_User user) {
         // Calculate due date based on user type
@@ -46,17 +40,13 @@ public class K2558859_AvailableState implements K2558859_BookState {
         System.out.println("\nBook '" + book.getTitle() + "' has been borrowed by " + user.getName());
     }
 
-    /**
-     * Cannot return a book that is already available.
-     */
+    // Cannot return a book that is already available
     @Override
     public void returnBook(K2558859_Book book) {
         System.out.println("Error: Book '" + book.getTitle() + "' is already available and cannot be returned.");
     }
 
-    /**
-     * Cannot reserve a book that is available - it should be borrowed directly.
-     */
+    // Cannot reserve a book that is available - it should be borrowed directly
     @Override
     public void reserve(K2558859_Book book, K2558859_User user) {
         System.out.println("Error: Book '" + book.getTitle() + "' is available. Please borrow it directly instead of reserving.");

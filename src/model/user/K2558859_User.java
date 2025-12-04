@@ -10,11 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Abstract K2558859_User class representing a library user.
- * Uses Strategy Pattern for fine calculation based on membership type.
- * Subclasses: K2558859_Student, K2558859_Faculty, K2558859_Guest.
- */
+// Abstract K2558859_User class representing a library user
 public abstract class K2558859_User {
     private String userId;
     private String name;
@@ -23,13 +19,7 @@ public abstract class K2558859_User {
     private List<K2558859_BorrowRecord> borrowedBooks;
     private List<K2558859_Reservation> reservations;
 
-    /**
-     * Constructor for K2558859_User.
-     * @param userId Unique identifier for the user
-     * @param name Name of the user
-     * @param email Email address of the user
-     * @param contactNumber Contact number of the user
-     */
+    // Constructor for K2558859_User
     public K2558859_User(String userId, String name, String email, String contactNumber) {
         this.userId = userId;
         this.name = name;
@@ -64,11 +54,7 @@ public abstract class K2558859_User {
         return Collections.unmodifiableList(reservations);
     }
 
-    /**
-     * Borrows a book for the user.
-     * Checks borrow limit before allowing the operation.
-     * @param book The book to be borrowed
-     */
+    // Borrows a book for the user
     public void borrowBook(K2558859_Book book) throws LibraryException {
         // Check if user has reached borrow limit
         long activeBorrows = borrowedBooks.stream()
@@ -85,10 +71,7 @@ public abstract class K2558859_User {
         // Add to user's borrowed books (will be done through addBorrowRecord)
     }
 
-    /**
-     * Returns a borrowed book.
-     * @param book The book to be returned
-     */
+    // Returns a borrowed book
     public void returnBook(K2558859_Book book) throws LibraryException {
         // Find the active borrow record for this book
         K2558859_BorrowRecord recordToUpdate = borrowedBooks.stream()
@@ -108,10 +91,7 @@ public abstract class K2558859_User {
         System.out.println("Book '" + book.getTitle() + "' returned by " + name + ".");
     }
 
-    /**
-     * Reserves a book for the user.
-     * @param book The book to be reserved
-     */
+    // Reserves a book for the user
     public void reserveBook(K2558859_Book book) throws LibraryException {
         // Check if user already has a reservation for this book
         boolean alreadyReserved = reservations.stream()
@@ -126,10 +106,7 @@ public abstract class K2558859_User {
         book.reserve(this);
     }
 
-    /**
-     * Cancels a reservation for a book.
-     * @param book The book whose reservation should be cancelled
-     */
+    // Cancels a reservation for a book
     public void cancelReservation(K2558859_Book book) throws LibraryException {
         // Find the reservation using a stream for consistency
         K2558859_Reservation toRemove = reservations.stream()
@@ -141,19 +118,12 @@ public abstract class K2558859_User {
         reservations.remove(toRemove);
     }
 
-    /**
-     * Adds a borrow record to the user's borrowed books list.
-     * Called by the book's state when borrowing is successful.
-     * @param record The borrow record to add
-     */
+    // Adds a borrow record to the user's borrowed books list
     public void addBorrowRecord(K2558859_BorrowRecord record) {
         borrowedBooks.add(record);
     }
 
-    /**
-     * Gets the number of currently active (unreturned) borrowed books.
-     * @return Count of active borrows
-     */
+    // Gets the number of currently active (unreturned) borrowed books
     public int getActiveBorrowCount() {
         return (int) borrowedBooks.stream()
             .filter(record -> record.getReturnDate() == null)
@@ -162,22 +132,13 @@ public abstract class K2558859_User {
 
     // Abstract methods to be implemented by subclasses (Strategy Pattern)
     
-    /**
-     * Gets the borrow period in days based on membership type.
-     * @return Number of days a book can be borrowed
-     */
+    // Gets the borrow period in days based on membership type
     public abstract int getBorrowPeriodInDays();
 
-    /**
-     * Gets the maximum number of books that can be borrowed simultaneously.
-     * @return Maximum borrowing capacity
-     */
+    // Gets the maximum number of books that can be borrowed simultaneously
     public abstract int getMaxBorrowCapacity();
 
-    /**
-     * Gets the fine calculation strategy based on membership type.
-     * @return K2558859_FineStrategy instance for this user type
-     */
+    // Gets the fine calculation strategy based on membership type
     public abstract K2558859_FineStrategy getFineStrategy();
 
     @Override

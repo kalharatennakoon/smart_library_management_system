@@ -18,11 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * K2558859_LibraryManagementSystem - Central service class managing all library operations.
- * Coordinates books, users, borrowing, reservations, and reports.
- * Uses Command Pattern for user actions and integrates all other patterns.
- */
+// K2558859_LibraryManagementSystem - Central service class managing all library operations
 public class K2558859_LibraryManagementSystem {
     private List<K2558859_Book> books;
     private List<K2558859_User> users;
@@ -48,10 +44,7 @@ public class K2558859_LibraryManagementSystem {
 
     // ----- Book Management -----
 
-    /**
-     * Adds a new book to the library system.
-     * @param book The book to be added
-     */
+    // Adds a new book to the library system
     public void addBook(K2558859_Book book) {
         if (findBookById(book.getBookId()) != null) {
             System.out.println("Error: Book with ID " + book.getBookId() + " already exists.");
@@ -61,10 +54,7 @@ public class K2558859_LibraryManagementSystem {
         System.out.println("Book '" + book.getTitle() + "' added successfully.");
     }
 
-    /**
-     * Removes a book from the library system.
-     * @param bookId The ID of the book to be removed
-     */
+    // Removes a book from the library system
     public void removeBook(String bookId) {
         K2558859_Book book = findBookById(bookId);
         if (book == null) {
@@ -84,10 +74,7 @@ public class K2558859_LibraryManagementSystem {
         System.out.println("Book '" + book.getTitle() + "' removed successfully.");
     }
 
-    /**
-     * Updates book information.
-     * @param book The book with updated information
-     */
+    // Updates book information
     public void updateBook(K2558859_Book book) {
         K2558859_Book existingBook = findBookById(book.getBookId());
         if (existingBook == null) {
@@ -103,10 +90,7 @@ public class K2558859_LibraryManagementSystem {
 
     // ----- User Management -----
 
-    /**
-     * Registers a new user in the library system.
-     * @param user The user to be registered
-     */
+    // Registers a new user in the library system
     public void registerUser(K2558859_User user) {
         if (findUserById(user.getUserId()) != null) {
             System.out.println("Error: User with ID " + user.getUserId() + " already exists.");
@@ -117,10 +101,7 @@ public class K2558859_LibraryManagementSystem {
                          user.getClass().getSimpleName() + ".");
     }
 
-    /**
-     * Removes a user from the library system.
-     * @param userId The ID of the user to be removed
-     */
+    // Removes a user from the library system
     public void removeUser(String userId) {
         K2558859_User user = findUserById(userId);
         if (user == null) {
@@ -141,13 +122,7 @@ public class K2558859_LibraryManagementSystem {
 
     // ----- Borrowing Operations (Using Command Pattern) -----
 
-    /**
-     * Borrows a book for a user using Command Pattern.
-     * @param bookId The ID of the book to borrow
-     * @param userId The ID of the user borrowing the book
-     * @throws BookNotFoundException if the book is not found
-     * @throws UserNotFoundException if the user is not found
-     */
+    // Borrows a book for a user using Command Pattern
     public void borrowBook(String bookId, String userId) {
         try {
             K2558859_Book book = findBookById(bookId);
@@ -162,13 +137,7 @@ public class K2558859_LibraryManagementSystem {
         }
     }
 
-    /**
-     * Returns a book using Command Pattern.
-     * @param bookId The ID of the book to return
-     * @param userId The ID of the user returning the book
-     * @throws BookNotFoundException if the book is not found
-     * @throws UserNotFoundException if the user is not found
-     */
+    // Returns a book using Command Pattern
     public void returnBook(String bookId, String userId) {
         try {
             K2558859_Book book = findBookById(bookId);
@@ -183,13 +152,7 @@ public class K2558859_LibraryManagementSystem {
         }
     }
 
-    /**
-     * Reserves a book for a user using Command Pattern.
-     * @param bookId The ID of the book to reserve
-     * @param userId The ID of the user reserving the book
-     * @throws BookNotFoundException if the book is not found
-     * @throws UserNotFoundException if the user is not found
-     */
+    // Reserves a book for a user using Command Pattern
     public void reserveBook(String bookId, String userId) {
         try {
             K2558859_Book book = findBookById(bookId);
@@ -206,12 +169,7 @@ public class K2558859_LibraryManagementSystem {
 
     // ----- Report Generation -----
 
-    /**
-     * Generates different types of reports for librarians.
-     * @param reportType The type of report to generate 
-     *                   ("Most Borrowed Books", "Active Borrowers", "Overdue Books")
-     * @return The generated K2558859_Report object
-     */
+    // Generates different types of reports for librarians
     public K2558859_Report generateReport(String reportType) {
         K2558859_Report report = new K2558859_Report("REP-" + System.currentTimeMillis(), reportType);
 
@@ -234,9 +192,7 @@ public class K2558859_LibraryManagementSystem {
         return report;
     }
 
-    /**
-     * Generates report for most borrowed books.
-     */
+    // Generates report for most borrowed books
     private void generateMostBorrowedBooksReport(K2558859_Report report) {
         Map<String, Integer> borrowCounts = new HashMap<>();
 
@@ -269,9 +225,7 @@ public class K2558859_LibraryManagementSystem {
         }
     }
 
-    /**
-     * Generates report for active borrowers.
-     */
+    // Generates report for active borrowers
     private void generateActiveBorrowersReport(K2558859_Report report) {
         report.addLine("ACTIVE BORROWERS REPORT");
         report.addLine("----------------------------------------------------------------------");
@@ -293,9 +247,7 @@ public class K2558859_LibraryManagementSystem {
         }
     }
 
-    /**
-     * Generates report for overdue books.
-     */
+    // Generates report for overdue books
     private void generateOverdueBooksReport(K2558859_Report report) {
         LocalDate today = LocalDate.now();
         
@@ -326,11 +278,7 @@ public class K2558859_LibraryManagementSystem {
 
     // ----- Helper Methods -----
 
-    /**
-     * Finds a book by its ID.
-     * @param bookId The book ID to search for
-     * @return The K2558859_Book object if found, null otherwise
-     */
+    // Finds a book by its ID
     private K2558859_Book findBookById(String bookId) {
         return books.stream()
             .filter(book -> book.getBookId().equalsIgnoreCase(bookId))
@@ -338,11 +286,7 @@ public class K2558859_LibraryManagementSystem {
             .orElse(null);
     }
 
-    /**
-     * Finds a user by their ID.
-     * @param userId The user ID to search for
-     * @return The K2558859_User object if found, null otherwise
-     */
+    // Finds a user by their ID
     private K2558859_User findUserById(String userId) {
         return users.stream()
             .filter(user -> user.getUserId().equalsIgnoreCase(userId))
@@ -350,21 +294,14 @@ public class K2558859_LibraryManagementSystem {
             .orElse(null);
     }
 
-    /**
-     * Generates a unique ID with the given prefix.
-     * @param prefix The prefix for the ID
-     * @return The generated ID
-     */
+    // Generates a unique ID with the given prefix
     private String generateId(String prefix) {
         return prefix + "-" + System.currentTimeMillis();
     }
 
     // ----- Librarian Management -----
 
-    /**
-     * Registers a new librarian in the library system.
-     * @param librarian The librarian to be registered
-     */
+    // Registers a new librarian in the library system
     public void registerLibrarian(K2558859_Librarian librarian) {
         if (findLibrarianById(librarian.getLibrarianId()) != null) {
             System.out.println("Error: Librarian with ID " + librarian.getLibrarianId() + " already exists.");
@@ -374,10 +311,7 @@ public class K2558859_LibraryManagementSystem {
         System.out.println("Librarian '" + librarian.getName() + "' registered successfully.");
     }
 
-    /**
-     * Removes a librarian from the library system.
-     * @param librarianId The ID of the librarian to be removed
-     */
+    // Removes a librarian from the library system
     public void removeLibrarian(String librarianId) {
         K2558859_Librarian librarian = findLibrarianById(librarianId);
         if (librarian == null) {
@@ -389,11 +323,7 @@ public class K2558859_LibraryManagementSystem {
         System.out.println("Librarian '" + librarian.getName() + "' removed successfully.");
     }
 
-    /**
-     * Finds a librarian by their ID.
-     * @param librarianId The librarian ID to search for
-     * @return The K2558859_Librarian object if found, null otherwise
-     */
+    // Finds a librarian by their ID
     private K2558859_Librarian findLibrarianById(String librarianId) {
         return librarians.stream()
             .filter(librarian -> librarian.getLibrarianId().equalsIgnoreCase(librarianId))

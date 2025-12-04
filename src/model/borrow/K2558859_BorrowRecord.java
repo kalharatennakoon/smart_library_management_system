@@ -7,10 +7,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Random;
 
-/**
- * K2558859_BorrowRecord class represents a record of a book borrowing transaction.
- * Tracks borrowing details and calculates fines using Strategy Pattern.
- */
+// K2558859_BorrowRecord class represents a record of a book borrowing transaction
 public class K2558859_BorrowRecord {
     private String recordId;
     private K2558859_Book book;
@@ -19,14 +16,7 @@ public class K2558859_BorrowRecord {
     private LocalDate dueDate;
     private LocalDate returnDate;
 
-    /**
-     * Constructor for K2558859_BorrowRecord.
-     * @param recordId Unique identifier for the borrow record
-     * @param book The book being borrowed
-     * @param user The user borrowing the book
-     * @param borrowDate The date when the book was borrowed
-     * @param dueDate The date when the book should be returned
-     */
+    // Constructor for K2558859_BorrowRecord
     public K2558859_BorrowRecord(String recordId, K2558859_Book book, K2558859_User user, LocalDate borrowDate, LocalDate dueDate) {
         this.recordId = recordId;
         this.book = book;
@@ -65,29 +55,17 @@ public class K2558859_BorrowRecord {
         return returnDate;
     }
 
-    /**
-     * Sets the return date when the book is returned.
-     * @param returnDate The date when the book was returned
-     */
+    // Sets the return date when the book is returned
     public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
     }
 
-    /**
-     * Calculates the fine for this borrow record using the Strategy Pattern.
-     * @param fineStrategy The fine calculation strategy based on user type
-     * @param currentDate The current date for fine calculation
-     * @return The calculated fine amount in LKR
-     */
+    // Calculates the fine for this borrow record using the Strategy Pattern
     public double calculateFine(K2558859_FineStrategy fineStrategy, LocalDate currentDate) {
         return fineStrategy.calculateFine(this, currentDate);
     }
 
-    /**
-     * Checks if the book is overdue.
-     * @param currentDate The current date to check against
-     * @return true if the book is overdue, false otherwise
-     */
+    // Checks if the book is overdue
     public boolean isOverdue(LocalDate currentDate) {
         // If already returned, check if it was returned late
         if (returnDate != null) {
@@ -97,11 +75,7 @@ public class K2558859_BorrowRecord {
         return currentDate.isAfter(dueDate);
     }
 
-    /**
-     * Gets the number of days overdue.
-     * @param currentDate The current date to calculate from
-     * @return Number of overdue days (0 if not overdue)
-     */
+    // Gets the number of days overdue
     public long getOverdueDays(LocalDate currentDate) {
         if (!isOverdue(currentDate)) {
             return 0;

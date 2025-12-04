@@ -5,10 +5,7 @@ import model.user.K2558859_User;
 import java.time.LocalDate;
 import java.util.Random;
 
-/**
- * K2558859_Reservation class represents a book reservation made by a user.
- * Tracks reservation details and handles user notifications.
- */
+// K2558859_Reservation class represents a book reservation made by a user
 public class K2558859_Reservation {
     private String reservationId;
     private K2558859_Book book;
@@ -16,13 +13,7 @@ public class K2558859_Reservation {
     private LocalDate reservationDate;
     private boolean isNotified;
 
-    /**
-     * Constructor for K2558859_Reservation.
-     * @param reservationId Unique identifier for the reservation
-     * @param book The book being reserved
-     * @param user The user making the reservation
-     * @param reservationDate The date when the reservation was made
-     */
+    // Constructor for K2558859_Reservation
     public K2558859_Reservation(String reservationId, K2558859_Book book, K2558859_User user, LocalDate reservationDate) {
         this.reservationId = reservationId;
         this.book = book;
@@ -56,10 +47,7 @@ public class K2558859_Reservation {
         return isNotified;
     }
 
-    /**
-     * Notifies the user that their reserved book is available.
-     * Uses the Observer Pattern through the notification system.
-     */
+    // Notifies the user that their reserved book is available
     public void notifyUser() {
         if (!isNotified) {
             System.out.println("Notification sent to " + user.getName() + 
@@ -71,10 +59,7 @@ public class K2558859_Reservation {
         }
     }
 
-    /**
-     * Cancels the reservation.
-     * Removes the reservation from the system and updates the book state if needed.
-     */
+    // Cancels the reservation
     public void cancel() {
         System.out.println("Reservation " + reservationId + " for book '" + 
                          book.getTitle() + "' by " + user.getName() + " has been cancelled.");

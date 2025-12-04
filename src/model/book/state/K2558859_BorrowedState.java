@@ -6,24 +6,16 @@ import model.borrow.K2558859_BorrowRecord;
 import java.time.LocalDate;
 import java.util.List;
 
-/**
- * K2558859_BorrowedState - Concrete state representing a borrowed book.
- * In this state, books can be returned or reserved, but not borrowed again.
- */
+// K2558859_BorrowedState - Concrete state representing a borrowed book
 public class K2558859_BorrowedState implements K2558859_BookState {
 
-    /**
-     * Cannot borrow a book that is already borrowed.
-     */
+    // Cannot borrow a book that is already borrowed
     @Override
     public void borrow(K2558859_Book book, K2558859_User user) {
         System.out.println("Error: Book '" + book.getTitle() + "' is already borrowed and unavailable.");
     }
 
-    /**
-     * Allows returning when the book is borrowed.
-     * Transitions the book to K2558859_AvailableState.
-     */
+    // Allows returning when the book is borrowed
     @Override
     public void returnBook(K2558859_Book book) {
         // The K2558859_User class handles updating the borrow record.
@@ -32,10 +24,7 @@ public class K2558859_BorrowedState implements K2558859_BookState {
         book.setState(new K2558859_AvailableState());
     }
 
-    /**
-     * Allows reserving a borrowed book.
-     * Transitions the book to K2558859_ReservedState.
-     */
+    // Allows reserving a borrowed book
     @Override
     public void reserve(K2558859_Book book, K2558859_User user) {
         System.out.println("Book '" + book.getTitle() + "' has been reserved by " + user.getName());
