@@ -5,8 +5,6 @@ import model.user.fines.K2558859_GuestFineStrategy;
 
 // K2558859_Guest class - Concrete user type representing a guest member
 public class K2558859_Guest extends K2558859_User {
-    private static final int BORROW_PERIOD_DAYS = 7;
-    private static final int MAX_BORROW_CAPACITY = 3;
 
     // Constructor for K2558859_Guest
     public K2558859_Guest(String userId, String name, String email, String contactNumber) {
@@ -16,7 +14,7 @@ public class K2558859_Guest extends K2558859_User {
     // Returns the borrow period in days for guests
     @Override
     public int getBorrowPeriodInDays() {
-        return BORROW_PERIOD_DAYS;
+        return 7;
     }
 
     // Returns the fine calculation strategy for guests
@@ -28,6 +26,6 @@ public class K2558859_Guest extends K2558859_User {
     // Gets the maximum number of books a guest can borrow simultaneously
     @Override
     public int getMaxBorrowCapacity() {
-        return MAX_BORROW_CAPACITY;
+        return 3;
     }
 }
