@@ -12,12 +12,12 @@ import java.util.List;
 
 // Abstract K2558859_User class representing a library user
 public abstract class K2558859_User {
-    private String userId;
-    private String name;
-    private String email;
-    private String contactNumber;
-    private List<K2558859_BorrowRecord> borrowedBooks;
-    private List<K2558859_Reservation> reservations;
+    protected String userId;
+    protected String name;
+    protected String email;
+    protected String contactNumber;
+    protected List<K2558859_BorrowRecord> borrowedBooks;
+    protected List<K2558859_Reservation> reservations;
 
     // Constructor for K2558859_User
     public K2558859_User(String userId, String name, String email, String contactNumber) {
