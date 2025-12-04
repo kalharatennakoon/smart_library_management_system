@@ -138,16 +138,12 @@ public class Main {
         String category = getStringInput("Category: ");
         String isbn = getStringInput("ISBN: ");
         int year = getIntInput("Year: ");
-        String edition = getStringInput("Edition: ");
-        String publisher = getStringInput("Publisher: ");
-        String language = getStringInput("Language: ");
+        String genre = getStringInput("Genre: ");
         
         String bookId = generateId("B"); // Auto-generate book ID
         K2558859_Book.K2558859_BookBuilder builder = new K2558859_Book.K2558859_BookBuilder(bookId, title, author, category, isbn)
             .setYear(year)
-            .setEdition(edition)
-            .setPublisher(publisher)
-            .setLanguage(language);
+            .setGenre(genre);
         
         K2558859_Book book = builder.build();
         library.addBook(book);
