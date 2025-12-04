@@ -162,8 +162,4 @@ public abstract class K2558859_Book {
     public void setMetadata(List<String> metadata) {
         this.metadata = metadata;
     }
-
-    private String generateBookId() {
-        return "B" + String.format("%04d", new Random().nextInt(10000));
-    }
 }

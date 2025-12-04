@@ -22,10 +22,6 @@ public class K2558859_Reservation {
         this.isNotified = false;
     }
 
-    private String generateReservationId() {
-        return "R" + String.format("%04d", new Random().nextInt(10000));
-    }
-
     // Getters
     public String getReservationId() {
         return reservationId;

@@ -26,10 +26,6 @@ public class K2558859_BorrowRecord {
         this.returnDate = null; // Not returned yet
     }
 
-    private String generateBorrowRecordId() {
-        return "BR" + String.format("%04d", new Random().nextInt(10000));
-    }
-
     // Getters
     public String getRecordId() {
         return recordId;

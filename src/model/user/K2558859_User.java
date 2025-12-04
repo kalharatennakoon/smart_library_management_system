@@ -101,9 +101,13 @@ public abstract class K2558859_User {
             throw new LibraryException(name + " has already reserved this book.");
         }
 
-        // Delegate to book's state pattern, which returns a reservation record on success
-        // The book's state will call back to add the reservation to the user.
+        // Delegate to book's state pattern
         book.reserve(this);
+    }
+
+    // Adds a reservation to the user's reservation list
+    public void addReservation(K2558859_Reservation reservation) {
+        reservations.add(reservation);
     }
 
     // Cancels a reservation for a book

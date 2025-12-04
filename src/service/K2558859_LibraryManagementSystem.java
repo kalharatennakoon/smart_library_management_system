@@ -46,10 +46,6 @@ public class K2558859_LibraryManagementSystem {
 
     // Adds a new book to the library system
     public void addBook(K2558859_Book book) {
-        if (findBookById(book.getBookId()) != null) {
-            System.out.println("Error: Book with ID " + book.getBookId() + " already exists.");
-            return; // Keep the flow consistent
-        }
         books.add(book);
         System.out.println("Book '" + book.getTitle() + "' added successfully.");
     }
@@ -62,7 +58,7 @@ public class K2558859_LibraryManagementSystem {
             return;
         }
 
-        // Check if book is currently borrowed
+        // Check if book is currently borrowed or reserved
         if (book.getAvailabilityStatus().getStateName().equals("Borrowed") ||
             book.getAvailabilityStatus().getStateName().equals("Reserved")) {
             System.out.println("Error: Cannot remove book '" + book.getTitle() + "' as it is currently " + 
@@ -74,28 +70,10 @@ public class K2558859_LibraryManagementSystem {
         System.out.println("Book '" + book.getTitle() + "' removed successfully.");
     }
 
-    // Updates book information
-    public void updateBook(K2558859_Book book) {
-        K2558859_Book existingBook = findBookById(book.getBookId());
-        if (existingBook == null) {
-            System.out.println("Error: Book with ID " + book.getBookId() + " not found.");
-            return;
-        }
-
-        // Remove old and add updated book
-        books.remove(existingBook);
-        books.add(book);
-        System.out.println("Book '" + book.getTitle() + "' updated successfully.");
-    }
-
     // ----- User Management -----
 
     // Registers a new user in the library system
     public void registerUser(K2558859_User user) {
-        if (findUserById(user.getUserId()) != null) {
-            System.out.println("Error: User with ID " + user.getUserId() + " already exists.");
-            return;
-        }
         users.add(user);
         System.out.println("User '" + user.getName() + "' registered successfully as " + 
                          user.getClass().getSimpleName() + ".");
@@ -162,6 +140,21 @@ public class K2558859_LibraryManagementSystem {
 
             K2558859_Command reserveCommand = new K2558859_ReserveCommand(user, book);
             commandInvoker.executeCommand(reserveCommand);
+        } catch (LibraryException e) {
+            System.out.println("\nError: " + e.getMessage());
+        }
+    }
+
+    // Cancels a book reservation using Command Pattern
+    public void cancelReservation(String bookId, String userId) {
+        try {
+            K2558859_Book book = findBookById(bookId);
+            K2558859_User user = findUserById(userId);
+            if (book == null) throw new BookNotFoundException(bookId);
+            if (user == null) throw new UserNotFoundException(userId);
+
+            K2558859_Command cancelCommand = new K2558859_CancelReservationCommand(user, book);
+            commandInvoker.executeCommand(cancelCommand);
         } catch (LibraryException e) {
             System.out.println("\nError: " + e.getMessage());
         }
@@ -276,7 +269,6 @@ public class K2558859_LibraryManagementSystem {
         }
     }
 
-    // ----- Helper Methods -----
 
     // Finds a book by its ID
     private K2558859_Book findBookById(String bookId) {
@@ -301,12 +293,8 @@ public class K2558859_LibraryManagementSystem {
 
     // ----- Librarian Management -----
 
-    // Registers a new librarian in the library system
+    // Registers a new librarian in the library system (librarian ID is auto-generated and guaranteed unique)
     public void registerLibrarian(K2558859_Librarian librarian) {
-        if (findLibrarianById(librarian.getLibrarianId()) != null) {
-            System.out.println("Error: Librarian with ID " + librarian.getLibrarianId() + " already exists.");
-            return;
-        }
         librarians.add(librarian);
         System.out.println("Librarian '" + librarian.getName() + "' registered successfully.");
     }
