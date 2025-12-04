@@ -34,10 +34,7 @@ public class K2558859_LibraryManagementSystem {
 
     private static K2558859_LibraryManagementSystem instance;
 
-    /**
-     * Constructor for K2558859_LibraryManagementSystem.
-     * Initializes all data structures.
-     */
+    // Constructor
     public K2558859_LibraryManagementSystem() {
         instance = this;
         this.books = new ArrayList<>();
