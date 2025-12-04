@@ -5,6 +5,8 @@ import model.user.fines.K2558859_StudentFineStrategy;
 
 // K2558859_Student class - Concrete user type representing a student member
 public class K2558859_Student extends K2558859_User {
+    private static final int BORROW_PERIOD_DAYS = 14;
+    private static final int MAX_BORROW_CAPACITY = 5;
 
     // Constructor for K2558859_Student
     public K2558859_Student(String userId, String name, String email, String contactNumber) {
@@ -14,7 +16,7 @@ public class K2558859_Student extends K2558859_User {
     // Returns the borrow period in days for students
     @Override
     public int getBorrowPeriodInDays() {
-        return 14; // 14 days loan period for students
+        return BORROW_PERIOD_DAYS;
     }
 
     // Returns the fine calculation strategy for students
@@ -26,6 +28,6 @@ public class K2558859_Student extends K2558859_User {
     // Gets the maximum number of books a student can borrow simultaneously
     @Override
     public int getMaxBorrowCapacity() {
-        return 5; // Students can borrow up to 5 books
+        return MAX_BORROW_CAPACITY;
     }
 }
