@@ -293,7 +293,7 @@ public class K2558859_LibraryManagementSystem {
 
     // ----- Librarian Management -----
 
-    // Registers a new librarian in the library system (librarian ID is auto-generated and guaranteed unique)
+    // Registers a new librarian in the library system
     public void registerLibrarian(K2558859_Librarian librarian) {
         librarians.add(librarian);
         System.out.println("Librarian '" + librarian.getName() + "' registered successfully.");
@@ -354,4 +354,4 @@ public class K2558859_LibraryManagementSystem {
             borrowRecords.add(record);
         }
     }
-}
+} 
