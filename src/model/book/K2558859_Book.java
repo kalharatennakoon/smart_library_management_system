@@ -117,7 +117,9 @@ public abstract class K2558859_Book {
         private String isbn;
         private List<String> metadata;
         private int year;
-        private String genre;
+        private String edition;
+        private String publisher;
+        private String language;
 
         // Constructor for K2558859_BookBuilder with required parameters
         public K2558859_BookBuilder(String bookId, String title, String author, String category, String isbn) {
@@ -138,12 +140,28 @@ public abstract class K2558859_Book {
         // Setter for year
         public K2558859_BookBuilder setYear(int year) {
             this.year = year;
+            this.metadata.add("Year: " + year);
             return this;
         }
 
-        // Setter for genre
-        public K2558859_BookBuilder setGenre(String genre) {
-            this.genre = genre;
+        // Setter for edition
+        public K2558859_BookBuilder setEdition(String edition) {
+            this.edition = edition;
+            this.metadata.add("Edition: " + edition);
+            return this;
+        }
+
+        // Setter for publisher
+        public K2558859_BookBuilder setPublisher(String publisher) {
+            this.publisher = publisher;
+            this.metadata.add("Publisher: " + publisher);
+            return this;
+        }
+
+        // Setter for language
+        public K2558859_BookBuilder setLanguage(String language) {
+            this.language = language;
+            this.metadata.add("Language: " + language);
             return this;
         }
 
