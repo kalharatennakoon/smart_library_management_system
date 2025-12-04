@@ -3,7 +3,7 @@ package model.user;
 import model.user.fines.K2558859_FineStrategy;
 import model.user.fines.K2558859_StudentFineStrategy;
 
-// K2558859_Student class - Concrete user type representing a student member
+// K2558859_Student class
 public class K2558859_Student extends K2558859_User {
 
     // Constructor for K2558859_Student
