@@ -32,7 +32,7 @@ public class K2558859_Librarian {
         return contactNumber;
     }
 
-    // Setters (optional, for updates)
+    // Setters
     public void setName(String name) {
         this.name = name;
     }
