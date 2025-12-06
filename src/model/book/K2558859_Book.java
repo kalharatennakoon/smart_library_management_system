@@ -85,14 +85,6 @@ public abstract class K2558859_Book {
         this.availabilityStatus = state;
     }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
-    public void setMetadata(List<String> metadata) {
-        this.metadata = metadata;
-    }
-
     // Public Methods
     public void addBorrowRecord(K2558859_BorrowRecord record) {
         this.borrowHistory.add(record);

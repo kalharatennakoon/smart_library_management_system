@@ -286,11 +286,6 @@ public class K2558859_LibraryManagementSystem {
             .orElse(null);
     }
 
-    // Generates a unique ID with the given prefix
-    private String generateId(String prefix) {
-        return prefix + "-" + System.currentTimeMillis();
-    }
-
     // ----- Librarian Management -----
 
     // Registers a new librarian in the library system
