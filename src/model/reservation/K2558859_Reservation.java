@@ -60,8 +60,7 @@ public class K2558859_Reservation {
         System.out.println("Reservation " + reservationId + " for book '" + 
                          book.getTitle() + "' by " + user.getName() + " has been cancelled.");
         
-        // Note: The actual removal from user's reservation list 
-        // should be handled by the K2558859_User class or K2558859_LibraryManagementSystem
+        // Note: The actual removal happens in the K2558859_User class and in the K2558859_LibraryManagementSystem
     }
 
     @Override
