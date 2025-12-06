@@ -51,11 +51,21 @@ public class K2558859_BorrowRecord {
         return returnDate;
     }
 
-    // Sets the return date when the book is returned
+    public long getOverdueDays(LocalDate currentDate) {
+        if (!isOverdue(currentDate)) {
+            return 0;
+        }
+        
+        LocalDate comparisonDate = (returnDate != null) ? returnDate : currentDate;
+        return ChronoUnit.DAYS.between(dueDate, comparisonDate);
+    }
+
+    // Setters
     public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
     }
 
+    // Public Methods
     // Calculates the fine for this borrow record using the Strategy Pattern
     public double calculateFine(K2558859_FineStrategy fineStrategy, LocalDate currentDate) {
         return fineStrategy.calculateFine(this, currentDate);
@@ -69,16 +79,6 @@ public class K2558859_BorrowRecord {
         }
         // If not returned, check if current date is past due date
         return currentDate.isAfter(dueDate);
-    }
-
-    // Gets the number of days overdue
-    public long getOverdueDays(LocalDate currentDate) {
-        if (!isOverdue(currentDate)) {
-            return 0;
-        }
-        
-        LocalDate comparisonDate = (returnDate != null) ? returnDate : currentDate;
-        return ChronoUnit.DAYS.between(dueDate, comparisonDate);
     }
 
     @Override
