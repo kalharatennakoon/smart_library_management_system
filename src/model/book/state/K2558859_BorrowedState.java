@@ -20,8 +20,6 @@ public class K2558859_BorrowedState implements K2558859_BookState {
     // Allows returning when the book is borrowed
     @Override
     public void returnBook(K2558859_Book book) {
-        // The K2558859_User class handles updating the borrow record.
-        // This state's only job is to transition the book's state.
         // Transition to K2558859_AvailableState
         book.setState(new K2558859_AvailableState());
     }

@@ -19,7 +19,6 @@ public class K2558859_ReservedState implements K2558859_BookState {
     @Override
     public void returnBook(K2558859_Book book) {
         // Transition to K2558859_AvailableState
-        // Note: In a complete system, this would trigger notification to the reservation holder
         book.setState(new K2558859_AvailableState());
     }
 

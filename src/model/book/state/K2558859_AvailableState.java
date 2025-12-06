@@ -32,7 +32,6 @@ public class K2558859_AvailableState implements K2558859_BookState {
         try {
             service.K2558859_LibraryManagementSystem.getInstance().addBorrowRecord(record);
         } catch (Exception e) {
-            // If singleton or static access is not available, this will be a no-op
         }
         
         // Transition to K2558859_BorrowedState
