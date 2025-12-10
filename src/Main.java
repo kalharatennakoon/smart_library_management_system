@@ -82,7 +82,7 @@ public class Main {
     private void bookManagementMenu() {
         while (true) {
             printSectionHeader("BOOK MANAGEMENT");
-            System.out.println("1. Add Book"); // Simple
+            System.out.println("1. Add Book");
             System.out.println("2. Add Book with Metadata"); // Builder Pattern
             System.out.println("3. Decorate Book"); // Decorator Pattern
             System.out.println("4. Update Book");
@@ -134,8 +134,9 @@ public class Main {
         System.out.println("\nBook added successfully!");
     }
 
+    // Builder Pattern implementation
     private void addBookWithBuilder() {
-        printSubHeader("Add Book with Builder Pattern");
+        printSubHeader("Add Book with Metadata");
         
         String title = getStringInput("Title: ");
         String author = getStringInput("Author: ");
@@ -155,13 +156,14 @@ public class Main {
         System.out.println("\nBook created successfully!");
     }
 
+    // Decorator Pattern implementation
     private void decorateBook() {
         if (library.getBooks().isEmpty()) {
             System.out.println("\nNo books available. Add a book first.");
             return;
         }
         
-        printSubHeader("Decorate Book (Decorator Pattern)");
+        printSubHeader("Decorate Book");
         viewAllBooks();
         
         String bookId = getStringInput("\nEnter Book ID to decorate: ");
@@ -455,11 +457,11 @@ public class Main {
         }
     }
 
-    // ------ BORROWING OPERATIONS --------
+    // ------ BORROWING OPERATIONS -------- (Command Pattern)
 
     private void borrowingOperationsMenu() {
         while (true) {
-            printSectionHeader("BORROWING OPERATIONS"); // Command Pattern
+            printSectionHeader("BORROWING OPERATIONS");
             System.out.println("1. Borrow Book");
             System.out.println("2. Return Book");
             System.out.println("3. View Borrow Records");
@@ -577,11 +579,11 @@ public class Main {
         }
     }
 
-    // ------ RESERVATION MENU --------
+    // ------ RESERVATION MENU -------- (State Pattern)
 
     private void reservationMenu() {
         while (true) {
-            printSectionHeader("RESERVATION OPERATIONS"); // State Pattern
+            printSectionHeader("RESERVATION OPERATIONS");
             System.out.println("1. Reserve Book");
             System.out.println("2. View Reservations");
             System.out.println("0. Back to Main Menu");
@@ -661,11 +663,11 @@ public class Main {
         }
     }
 
-    // ------ NOTIFICATION MENU --------
+    // ------ NOTIFICATION MENU -------- (Observer Pattern)
 
     private void notificationMenu() {
         while (true) {
-            printSectionHeader("NOTIFICATIONS"); // Observer Pattern
+            printSectionHeader("NOTIFICATIONS");
             System.out.println("1. Send Test Notification");
             System.out.println("2. Send Due Date Reminder");
             System.out.println("3. View Observer Count");
@@ -727,14 +729,14 @@ public class Main {
         }
     }
 
-    // ------ REPORT MENU --------
+    // ------ REPORT MENU -------- (Strategy Pattern for fine calculation)
 
     private void reportMenu() {
         while (true) {
             printSectionHeader("REPORTS");
             System.out.println("1. Most Borrowed Books");
             System.out.println("2. Active Borrowers");
-            System.out.println("3. Overdue Books"); // Strategy Pattern
+            System.out.println("3. Overdue Books");
             System.out.println("0. Back to Main Menu");
 
             int choice = getIntInput("\nEnter your choice: ");
