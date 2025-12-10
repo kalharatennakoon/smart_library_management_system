@@ -1,6 +1,8 @@
 package service;
 
 import model.book.K2558859_Book;
+import model.book.K2558859_BasicBook;
+import model.book.state.K2558859_BookState;
 import model.user.K2558859_User;
 import model.user.K2558859_Librarian;
 import model.borrow.K2558859_BorrowRecord;
@@ -68,6 +70,51 @@ public class K2558859_LibraryManagementSystem {
 
         books.remove(book);
         System.out.println("Book '" + book.getTitle() + "' removed successfully.");
+    }
+
+    // Updates an existing book's details
+    public void updateBook(String bookId, String newTitle, String newAuthor, String newCategory, String newIsbn) {
+        K2558859_Book book = findBookById(bookId);
+        if (book == null) {
+            System.out.println("Error: Book with ID " + bookId + " not found.");
+            return;
+        }
+
+        // Check if book is currently borrowed or reserved
+        if (book.getAvailabilityStatus().getStateName().equals("Borrowed") ||
+            book.getAvailabilityStatus().getStateName().equals("Reserved")) {
+            System.out.println("Warning: Book '" + book.getTitle() + "' is currently " + 
+                             book.getAvailabilityStatus().getStateName().toLowerCase() + 
+                             ". Updates will be applied but the status remains unchanged.");
+        }
+
+        // Store old values for confirmation message
+        String oldTitle = book.getTitle();
+        
+        // Since Book fields are protected, we need to remove and add a new book
+        // with updated details while preserving the state and history
+        K2558859_BookState currentState = book.getAvailabilityStatus();
+        List<K2558859_BorrowRecord> history = new ArrayList<>(book.getBorrowHistory());
+        List<String> metadata = new ArrayList<>(book.getMetadata());
+
+        // Remove old book
+        books.remove(book);
+
+        // Create new book with updated details
+        K2558859_Book updatedBook = new K2558859_BasicBook(bookId, newTitle, newAuthor, newCategory, newIsbn, metadata);
+        updatedBook.setState(currentState);
+        
+        // Restore borrow history
+        for (K2558859_BorrowRecord record : history) {
+            updatedBook.addBorrowRecord(record);
+        }
+
+        // Add updated book
+        books.add(updatedBook);
+
+        System.out.println("\nBook updated successfully!");
+        System.out.println("Previous: '" + oldTitle + "'");
+        System.out.println("Updated:  '" + newTitle + "'");
     }
 
     // ----- User Management -----
@@ -349,4 +396,4 @@ public class K2558859_LibraryManagementSystem {
             borrowRecords.add(record);
         }
     }
-} 
+}

@@ -85,8 +85,9 @@ public class Main {
             System.out.println("1. Add Book"); // Simple
             System.out.println("2. Add Book with Metadata"); // Builder Pattern
             System.out.println("3. Decorate Book"); // Decorator Pattern
-            System.out.println("4. Remove Book");
-            System.out.println("5. View All Books");
+            System.out.println("4. Update Book");
+            System.out.println("5. Remove Book");
+            System.out.println("6. View All Books");
             System.out.println("0. Back to Main Menu");
 
             int choice = getIntInput("\nEnter your choice: ");
@@ -102,15 +103,18 @@ public class Main {
                     decorateBook();
                     break;
                 case 4:
-                    removeBook();
+                    updateBook();
                     break;
                 case 5:
+                    removeBook();
+                    break;
+                case 6:
                     viewAllBooks();
                     break;
                 case 0:
                     return;
                 default:
-                    System.out.println("\nInvalid choice. Please enter a number between 0 and 5.");
+                    System.out.println("\nInvalid choice. Please enter a number between 0 and 6.");
             }
         }
     }
@@ -199,6 +203,52 @@ public class Main {
         System.out.println(baseBook.getDescription());
         System.out.println("\nDecorated Book:");
         System.out.println(decoratedBook.getDescription());
+    }
+
+    private void updateBook() {
+        printSubHeader("Update Book");
+        
+        if (library.getBooks().isEmpty()) {
+            System.out.println("\nNo books available in the system to update.");
+            return;
+        }
+        
+        viewAllBooks();
+        
+        String bookId = getStringInput("\nEnter Book ID to update: ").trim();
+        K2558859_Book existingBook = findBookById(bookId);
+        
+        if (existingBook == null) {
+            System.out.println("\nError: Book with ID " + bookId + " not found.");
+            return;
+        }
+        
+        System.out.println("\nCurrent Book Details:");
+        System.out.println("Title: " + existingBook.getTitle());
+        System.out.println("Author: " + existingBook.getAuthor());
+        System.out.println("Category: " + existingBook.getCategory());
+        System.out.println("ISBN: " + existingBook.getIsbn());
+        System.out.println("Status: " + existingBook.getAvailabilityStatus().getStateName());
+        
+        System.out.println("\n" + "-".repeat(80));
+        System.out.println("Enter new details (press Enter to keep current value):");
+        System.out.println("-".repeat(80));
+        
+        // Get new values, using current values as defaults
+        String newTitle = getOptionalStringInput("New Title [" + existingBook.getTitle() + "]: ", existingBook.getTitle());
+        String newAuthor = getOptionalStringInput("New Author [" + existingBook.getAuthor() + "]: ", existingBook.getAuthor());
+        String newCategory = getOptionalStringInput("New Category [" + existingBook.getCategory() + "]: ", existingBook.getCategory());
+        String newIsbn = getOptionalStringInput("New ISBN [" + existingBook.getIsbn() + "]: ", existingBook.getIsbn());
+        
+        // Confirm update
+        System.out.print("\nConfirm update? (yes/no): ");
+        String confirmation = scanner.nextLine().trim();
+        
+        if (confirmation.equalsIgnoreCase("yes")) {
+            library.updateBook(bookId, newTitle, newAuthor, newCategory, newIsbn);
+        } else {
+            System.out.println("\nUpdate cancelled.");
+        }
     }
 
     private void removeBook() {
@@ -819,5 +869,11 @@ public class Main {
         }
         // Fallback for any other prefixes, though not expected
         return prefix + String.format("%04d", new Random().nextInt(10000));
+    }
+
+    private String getOptionalStringInput(String prompt, String defaultValue) {
+        System.out.print(prompt);
+        String input = scanner.nextLine().trim();
+        return input.isEmpty() ? defaultValue : input;
     }
 }
