@@ -51,15 +51,6 @@ public class K2558859_BorrowRecord {
         return returnDate;
     }
 
-    public long getOverdueDays(LocalDate currentDate) {
-        if (!isOverdue(currentDate)) {
-            return 0;
-        }
-        
-        LocalDate comparisonDate = (returnDate != null) ? returnDate : currentDate;
-        return ChronoUnit.DAYS.between(dueDate, comparisonDate);
-    }
-
     // Setters
     public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
@@ -79,6 +70,15 @@ public class K2558859_BorrowRecord {
         }
         // If not returned, check if current date is past due date
         return currentDate.isAfter(dueDate);
+    }
+
+    public long getOverdueDays(LocalDate currentDate) {
+        if (!isOverdue(currentDate)) {
+            return 0;
+        }
+        
+        LocalDate comparisonDate = (returnDate != null) ? returnDate : currentDate;
+        return ChronoUnit.DAYS.between(dueDate, comparisonDate);
     }
 
     @Override
