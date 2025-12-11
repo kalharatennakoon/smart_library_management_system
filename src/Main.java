@@ -218,9 +218,9 @@ public class Main {
                 decoratedBook = new K2558859_SpecialEditionDecorator(baseBook);
                 break;
             case 4:
-                decoratedBook = new K2558859_FeaturedDecorator(
+                decoratedBook = new K2558859_SpecialEditionDecorator(
                     new K2558859_RecommendedDecorator(
-                        new K2558859_SpecialEditionDecorator(baseBook)));
+                        new K2558859_FeaturedDecorator(baseBook)));
                 break;
         }
         
