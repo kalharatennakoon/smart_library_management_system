@@ -119,6 +119,15 @@ public abstract class K2558859_User {
 
         toRemove.cancel();
         reservations.remove(toRemove);
+        
+        // Remove from library's global reservations list
+        service.K2558859_LibraryManagementSystem library = service.K2558859_LibraryManagementSystem.getInstance();
+        if (library != null) {
+            library.getReservations().remove(toRemove);
+        }
+        
+        // Change book state back to Borrowed (since it was borrowed before reservation)
+        book.setState(new model.book.state.K2558859_BorrowedState());
     }
 
     // Adds a borrow record to the user's borrowed books list

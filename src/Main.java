@@ -626,6 +626,7 @@ public class Main {
             printSectionHeader("RESERVATION OPERATIONS");
             System.out.println("1. Reserve Book");
             System.out.println("2. View Reservations");
+            System.out.println("3. Cancel Reservation");
             System.out.println("0. Back to Main Menu");
 
             int choice = getIntInput("\nEnter your choice: ");
@@ -637,10 +638,13 @@ public class Main {
             case 2:
                 viewReservations();
                 break;
+            case 3:
+                cancelReservation();
+                break;
                 case 0:
                     return; // Exit to Main Menu
                 default:
-                    System.out.println("\nInvalid choice. Please enter a number between 0 and 2.");
+                    System.out.println("\nInvalid choice. Please enter a number between 0 and 3.");
             }
         }
     }
@@ -703,6 +707,35 @@ public class Main {
         }
     }
 
+    private void cancelReservation() {
+        printSubHeader("Cancel Reservation");
+        
+        if (library.getReservations().isEmpty()) {
+            System.out.println("\nNo reservations found to cancel.");
+            return;
+        }
+        
+        viewReservations();
+        
+        String bookId = getStringInput("\nEnter Book ID: ").trim();
+        String userId = getStringInput("Enter User ID: ").trim();
+
+        // Find the actual book and user to get correctly-cased IDs
+        K2558859_Book bookToCancel = findBookById(bookId);
+        K2558859_User userCanceling = findUserById(userId);
+
+        if (bookToCancel == null) {
+            System.out.println("\nError: Book with ID " + bookId + " not found.");
+            return;
+        }
+        if (userCanceling == null) {
+            System.out.println("\nError: User with ID " + userId + " not found.");
+            return;
+        }
+
+        library.cancelReservation(bookToCancel.getBookId(), userCanceling.getUserId());
+    }
+
     // ------ NOTIFICATION MENU -------- (Observer Pattern)
 
     private void notificationMenu() {
@@ -762,10 +795,32 @@ public class Main {
         K2558859_Book book = findBookById(bookId);
         
         if (book != null) {
+            // Check if the book is borrowed
+            if (!book.getAvailabilityStatus().getStateName().equals("Borrowed")) {
+                System.out.println("\nError: Book '" + book.getTitle() + "' is not currently borrowed.");
+                return;
+            }
+            
+            // Find the user who borrowed this book
+            K2558859_User borrower = null;
+            for (var record : library.getBorrowRecords()) {
+                if (record.getBook().getBookId().equals(book.getBookId()) && 
+                    record.getReturnDate() == null) {
+                    borrower = record.getUser();
+                    break;
+                }
+            }
+            
+            if (borrower == null) {
+                System.out.println("\nError: Could not find the borrower for this book.");
+                return;
+            }
+            
             int days = getIntInput("Days until due: ");
             String message = "Book '" + book.getTitle() + "' is due in " + days + " days";
-            notificationService.notifyObservers(book, message);
-            // notificationService.sendDueDateReminder(book, days);
+            
+            // Send notification only to the borrower
+            System.out.println("Notification to " + borrower.getName() + " (" + borrower.getEmail() + "): " + message);
         }
     }
 

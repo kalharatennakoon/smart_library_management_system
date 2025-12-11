@@ -379,6 +379,13 @@ public class K2558859_LibraryManagementSystem {
         return new ArrayList<>(reservations);
     }
 
+    // Adds a reservation to the library's reservation list
+    public void addReservation(K2558859_Reservation reservation) {
+        if (reservation != null) {
+            reservations.add(reservation);
+        }
+    }
+
     public List<K2558859_Report> getReports() {
         return new ArrayList<>(reports);
     }

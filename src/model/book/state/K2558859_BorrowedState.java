@@ -37,7 +37,7 @@ public class K2558859_BorrowedState implements K2558859_BookState {
         // Add to library system's reservations list
         K2558859_LibraryManagementSystem library = K2558859_LibraryManagementSystem.getInstance();
         if (library != null) {
-            library.getReservations().add(reservation);
+            library.addReservation(reservation);
         }
         
         // Transition to K2558859_ReservedState
