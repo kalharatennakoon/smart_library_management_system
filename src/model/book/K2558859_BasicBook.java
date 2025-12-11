@@ -27,9 +27,12 @@ public class K2558859_BasicBook extends K2558859_Book {
                    .append(", ISBN: ").append(isbn)
                    .append(", Status: ").append(availabilityStatus.getStateName());
         
-        // Add metadata if present
+        // Add metadata if present with better formatting
         if (!metadata.isEmpty()) {
-            description.append(", Metadata: ").append(String.join(", ", metadata));
+            description.append("\n  Metadata:");
+            for (String meta : metadata) {
+                description.append("\n    • ").append(meta);
+            }
         }
         
         return description.toString();

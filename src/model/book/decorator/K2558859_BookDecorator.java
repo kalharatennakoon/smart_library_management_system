@@ -70,4 +70,9 @@ public abstract class K2558859_BookDecorator extends K2558859_Book {
     public List<K2558859_BorrowRecord> getBorrowHistoryInternal() {
         return decoratedBook.getBorrowHistoryInternal();
     }
+
+    @Override
+    public List<String> getMetadata() {
+        return decoratedBook.getMetadata();
+    }
 }

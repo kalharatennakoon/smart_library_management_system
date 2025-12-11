@@ -136,24 +136,51 @@ public class Main {
 
     // Builder Pattern implementation
     private void addBookWithBuilder() {
-        printSubHeader("Add Book with Metadata");
+        printSubHeader("Add Book with Metadata (Builder Pattern)");
         
         String title = getStringInput("Title: ");
         String author = getStringInput("Author: ");
         String category = getStringInput("Category: ");
         String isbn = getStringInput("ISBN: ");
-        int year = getIntInput("Year: ");
-        String genre = getStringInput("Genre: ");
         
         String bookId = generateId("B"); // Auto-generate book ID
-        K2558859_Book.K2558859_BookBuilder builder = new K2558859_Book.K2558859_BookBuilder(bookId, title, author, category, isbn)
-            .setYear(year)
-            .setGenre(genre);
+        K2558859_Book.K2558859_BookBuilder builder = 
+            new K2558859_Book.K2558859_BookBuilder(bookId, title, author, category, isbn);
+        
+        // Ask for optional metadata
+        System.out.println("\nAdd optional metadata (press Enter to skip):");
+        
+        String edition = getOptionalStringInput("Edition (e.g., 'First Edition', '2024'): ", "");
+        if (!edition.isEmpty()) {
+            builder.setEdition(edition);
+        }
+        
+        String review = getOptionalStringInput("Review: ", "");
+        if (!review.isEmpty()) {
+            builder.addReview(review);
+        }
+        
+        String tag = getOptionalStringInput("Tag (e.g., 'bestseller', 'award-winning'): ", "");
+        if (!tag.isEmpty()) {
+            builder.addTag(tag);
+        }
+        
+        // Allow multiple tags
+        System.out.print("Add more tags? (y/n): ");
+        if (scanner.nextLine().trim().equalsIgnoreCase("y")) {
+            while (true) {
+                String additionalTag = getOptionalStringInput("Additional Tag (or press Enter to finish): ", "");
+                if (additionalTag.isEmpty()) break;
+                builder.addTag(additionalTag);
+            }
+        }
         
         K2558859_Book book = builder.build();
         library.addBook(book);
         
-        System.out.println("\nBook created successfully!");
+        System.out.println("\n✓ Book created successfully with metadata!");
+        System.out.println("\nBook Details:");
+        System.out.println(book.getDescription());
     }
 
     // Decorator Pattern implementation
@@ -232,6 +259,14 @@ public class Main {
         System.out.println("ISBN: " + existingBook.getIsbn());
         System.out.println("Status: " + existingBook.getAvailabilityStatus().getStateName());
         
+        // Display current metadata if any
+        if (!existingBook.getMetadata().isEmpty()) {
+            System.out.println("\nCurrent Metadata:");
+            for (String meta : existingBook.getMetadata()) {
+                System.out.println("  • " + meta);
+            }
+        }
+        
         System.out.println("\n" + "-".repeat(80));
         System.out.println("Enter new details (press Enter to keep current value):");
         System.out.println("-".repeat(80));
@@ -303,6 +338,14 @@ public class Main {
                 book.getAvailabilityStatus().getStateName(),
                 truncate(book.getCategory(), 20),
                 truncate(book.getIsbn(), 15));
+            
+            // Display optional metadata (reviews, tags, editions) if present
+            if (!book.getMetadata().isEmpty()) {
+                System.out.println("  Metadata:");
+                for (String meta : book.getMetadata()) {
+                    System.out.println("    • " + meta);
+                }
+            }
         }
     }
 

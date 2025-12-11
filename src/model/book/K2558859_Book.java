@@ -113,8 +113,6 @@ public abstract class K2558859_Book {
         private String category;
         private String isbn;
         private List<String> metadata;
-        private int year;
-        private String genre;
 
         public K2558859_BookBuilder(String bookId, String title, String author, String category, String isbn) {
             this.bookId = bookId;
@@ -130,15 +128,18 @@ public abstract class K2558859_Book {
             return this;
         }
 
-        public K2558859_BookBuilder setYear(int year) {
-            this.year = year;
-            this.metadata.add("Year: " + year);
+        public K2558859_BookBuilder addReview(String review) {
+            this.metadata.add("Review: " + review);
             return this;
         }
 
-        public K2558859_BookBuilder setGenre(String genre) {
-            this.genre = genre;
-            this.metadata.add("Genre: " + genre);
+        public K2558859_BookBuilder addTag(String tag) {
+            this.metadata.add("Tag: " + tag);
+            return this;
+        }
+
+        public K2558859_BookBuilder setEdition(String edition) {
+            this.metadata.add("Edition: " + edition);
             return this;
         }
 
