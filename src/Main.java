@@ -130,13 +130,11 @@ public class Main {
         String bookId = generateId("B"); // Auto-generate book ID
         K2558859_Book book = new K2558859_BasicBook(bookId, title, author, category, isbn);
         library.addBook(book);
-        
-        System.out.println("\nBook added successfully!");
     }
 
     // Builder Pattern implementation
     private void addBookWithBuilder() {
-        printSubHeader("Add Book with Metadata (Builder Pattern)");
+        printSubHeader("Add Book with Metadata");
         
         String title = getStringInput("Title: ");
         String author = getStringInput("Author: ");
@@ -178,7 +176,6 @@ public class Main {
         K2558859_Book book = builder.build();
         library.addBook(book);
         
-        System.out.println("\n✓ Book created successfully with metadata!");
         System.out.println("\nBook Details:");
         System.out.println(book.getDescription());
     }
