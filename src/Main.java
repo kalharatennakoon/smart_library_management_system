@@ -492,7 +492,7 @@ public class Main {
             System.out.printf("%-10s %-25s %-15s %-15d\n",
                 user.getUserId(),
                 truncate(user.getName(), 25),
-                user.getClass().getSimpleName(),
+                util.ValidationUtil.removeClassPrefix(user.getClass().getSimpleName()),
                 user.getActiveBorrowCount());
         }
     }

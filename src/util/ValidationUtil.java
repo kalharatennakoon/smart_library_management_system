@@ -77,4 +77,13 @@ public class ValidationUtil {
     public static String getContactNumberErrorMessage() {
         return "Invalid contact number. Contact number must contain exactly 10 digits";
     }
+    
+    // Removes the class prefix (e.g., "K2558859_") from a class name
+    public static String removeClassPrefix(String className) {
+        if (className == null || className.isEmpty()) {
+            return className;
+        }
+        // Remove prefix pattern like "K2558859_"
+        return className.replaceFirst("^K\\d+_", "");
+    }
 }

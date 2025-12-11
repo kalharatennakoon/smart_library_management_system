@@ -123,7 +123,7 @@ public class K2558859_LibraryManagementSystem {
     public void registerUser(K2558859_User user) {
         users.add(user);
         System.out.println("User '" + user.getName() + "' registered successfully as " + 
-                         user.getClass().getSimpleName() + ".");
+                         util.ValidationUtil.removeClassPrefix(user.getClass().getSimpleName()) + ".");
     }
 
     // Removes a user from the library system
@@ -278,7 +278,7 @@ public class K2558859_LibraryManagementSystem {
             if (activeBorrows > 0) {
                 report.addLine(String.format("%-10s %-20s %-15s %-15d", 
                     user.getUserId(), user.getName(), 
-                    user.getClass().getSimpleName(), activeBorrows));
+                    util.ValidationUtil.removeClassPrefix(user.getClass().getSimpleName()), activeBorrows));
             }
         }
 

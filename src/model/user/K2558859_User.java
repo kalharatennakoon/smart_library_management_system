@@ -142,7 +142,7 @@ public abstract class K2558859_User {
                 "userId='" + userId + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", membershipType='" + this.getClass().getSimpleName() + '\'' +
+                ", membershipType='" + util.ValidationUtil.removeClassPrefix(this.getClass().getSimpleName()) + '\'' +
                 ", activeBorrows=" + getActiveBorrowCount() +
                 '}';
     }
