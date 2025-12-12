@@ -5,7 +5,7 @@ A comprehensive library management system built with Java, implementing various 
 ## Features
 
 - **Book Management**: Add, update, and manage books with various attributes
-- **User Management**: Support for different user types (Students, Faculty, Guests)
+- **User Management**: Support for different user types (Students, Faculty, Guests, Librarians)
 - **Borrowing System**: Track book borrowings with due dates and return status
 - **Reservation System**: Allow users to reserve books that are currently borrowed
 - **Fine Calculation**: Automatic fine calculation based on user type and overdue days
@@ -27,45 +27,46 @@ A comprehensive library management system built with Java, implementing various 
 ### 1. **Command Pattern**
 - Location: `src/command/`
 - Encapsulates borrowing, returning, reserving, and canceling operations as command objects
-- Classes: `BorrowCommand`, `ReturnCommand`, `ReserveCommand`, `CancelReservationCommand`
+- Classes: `K2558859_BorrowCommand`, `K2558859_ReturnCommand`, `K2558859_ReserveCommand`, `K2558859_CancelReservationCommand`
 
 ### 2. **State Pattern**
 - Location: `src/model/book/state/`
 - Manages book states (Available, Borrowed, Reserved)
-- Classes: `AvailableState`, `BorrowedState`, `ReservedState`
+- Classes: `K2558859_AvailableState`, `K2558859_BorrowedState`, `K2558859_ReservedState`
 
 ### 3. **Builder Pattern**
 - Location: `src/model/book/`
-- Provides a flexible way to construct Book objects
-- Class: `BookBuilder` (as a static inner class inside `Book.java`)
+- Provides a flexible way to construct Book objects with metadata
+- Class: `K2558859_BookBuilder` (as a static inner class inside `K2558859_Book.java`)
 
 ### 4. **Decorator Pattern**
 - Location: `src/model/book/decorator/`
 - Adds additional features to books dynamically
-- Classes: `FeaturedDecorator`, `RecommendedDecorator`, `SpecialEditionDecorator`
+- Classes: `K2558859_FeaturedDecorator`, `K2558859_RecommendedDecorator`, `K2558859_SpecialEditionDecorator`
 
 ### 5. **Strategy Pattern**
 - Location: `src/model/user/fines/`
 - Different fine calculation strategies for different user types
-- Classes: `StudentFineStrategy`, `FacultyFineStrategy`, `GuestFineStrategy`
+- Classes: `K2558859_StudentFineStrategy`, `K2558859_FacultyFineStrategy`, `K2558859_GuestFineStrategy`
 
 ### 6. **Observer Pattern**
 - Location: `src/service/notification/`
 - Notification system for user updates
-- Classes: `NotificationService`, `UserNotificationObserver`
+- Classes: `K2558859_NotificationService`, `K2558859_UserNotificationObserver`
 
 ## Project Structure
 
 ```
 src/
 ├── Main.java
+├── reset.sh
 ├── command/
-│   ├── Command.java
-│   ├── CommandInvoker.java
-│   ├── BorrowCommand.java
-│   ├── ReturnCommand.java
-│   ├── ReserveCommand.java
-│   └── CancelReservationCommand.java
+│   ├── K2558859_Command.java
+│   ├── K2558859_CommandInvoker.java
+│   ├── K2558859_BorrowCommand.java
+│   ├── K2558859_ReturnCommand.java
+│   ├── K2558859_ReserveCommand.java
+│   └── K2558859_CancelReservationCommand.java
 ├── exception/
 │   ├── LibraryException.java
 │   ├── BookNotFoundException.java
@@ -74,41 +75,42 @@ src/
 │   └── ValidationException.java
 ├── model/
 │   ├── book/
-│   │   ├── Book.java
-│   │   ├── BasicBook.java
+│   │   ├── K2558859_Book.java
+│   │   ├── K2558859_BasicBook.java
 │   │   ├── decorator/
-│   │   │   ├── BookDecorator.java
-│   │   │   ├── FeaturedDecorator.java
-│   │   │   ├── RecommendedDecorator.java
-│   │   │   └── SpecialEditionDecorator.java
+│   │   │   ├── K2558859_BookDecorator.java
+│   │   │   ├── K2558859_FeaturedDecorator.java
+│   │   │   ├── K2558859_RecommendedDecorator.java
+│   │   │   └── K2558859_SpecialEditionDecorator.java
 │   │   └── state/
-│   │       ├── BookState.java
-│   │       ├── AvailableState.java
-│   │       ├── BorrowedState.java
-│   │       └── ReservedState.java
+│   │       ├── K2558859_BookState.java
+│   │       ├── K2558859_AvailableState.java
+│   │       ├── K2558859_BorrowedState.java
+│   │       └── K2558859_ReservedState.java
 │   ├── borrow/
-│   │   └── BorrowRecord.java
+│   │   └── K2558859_BorrowRecord.java
 │   ├── report/
-│   │   └── Report.java
+│   │   └── K2558859_Report.java
 │   ├── reservation/
-│   │   └── Reservation.java
+│   │   └── K2558859_Reservation.java
 │   └── user/
-│       ├── User.java
-│       ├── Student.java
-│       ├── Faculty.java
-│       ├── Guest.java
+│       ├── K2558859_User.java
+│       ├── K2558859_Student.java
+│       ├── K2558859_Faculty.java
+│       ├── K2558859_Guest.java
+│       ├── K2558859_Librarian.java
 │       └── fines/
-│           ├── FineStrategy.java
-│           ├── StudentFineStrategy.java
-│           ├── FacultyFineStrategy.java
-│           └── GuestFineStrategy.java
+│           ├── K2558859_FineStrategy.java
+│           ├── K2558859_StudentFineStrategy.java
+│           ├── K2558859_FacultyFineStrategy.java
+│           └── K2558859_GuestFineStrategy.java
 ├── service/
-│   ├── LibraryManagementSystem.java
+│   ├── K2558859_LibraryManagementSystem.java
 │   └── notification/
-│       ├── Subject.java
-│       ├── Observer.java
-│       ├── NotificationService.java
-│       └── UserNotificationObserver.java
+│       ├── K2558859_Subject.java
+│       ├── K2558859_Observer.java
+│       ├── K2558859_NotificationService.java
+│       └── K2558859_UserNotificationObserver.java
 └── util/
     └── ValidationUtil.java
 ```
@@ -137,6 +139,12 @@ src/
    java Main
    ```
 
+4. (Optional) Reset compiled files:
+   ```bash
+   ./reset.sh
+   ```
+   This script removes all `.class` files from the project.
+
 ## User Types and Borrowing Policies
 
 | User Type | Borrow Limit | Loan Period | Fine Rate (LKR/day) |
@@ -144,7 +152,6 @@ src/
 | Student   | 5 books      | 14 days     | 50                  |
 | Faculty   | 10 books     | 30 days     | 20                  |
 | Guest     | 3 books      | 7 days      | 100                 |
-
 
 
 ## License
